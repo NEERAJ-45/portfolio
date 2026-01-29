@@ -4,6 +4,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
 @layer base {
   :root {
     --background: 0 0% 4%;
@@ -80,8 +83,9 @@
 
   .skill-tag {
     @apply px-4 py-2 bg-secondary text-foreground rounded-md text-sm font-medium border border-border 
-           transition-all duration-300 hover:border-primary hover:text-primary;
+           transition-all duration-300   hover:border-2 hover:border-primary;
   }
+  /*  transition-all duration-300 hover:border-primary hover:text-primary; */
 
   .project-card {
     @apply bg-card border border-border rounded-lg p-6 transition-all duration-300 
