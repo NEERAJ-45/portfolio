@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import Typed from "typed.js";
 import avatarImage from "@/assets/avatar.jpg";
-
+import resumePdf from "../assets/Resume_Neeraj_Surnis.pdf";
 const Hero = () => {
   const typedRef = useRef<HTMLSpanElement>(null);
 
@@ -142,7 +142,7 @@ const Hero = () => {
 
                 {/* Download Resume Button */}
                 <motion.a
-                  href="/resume.pdf"
+                  href={resumePdf}
                   download
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
