@@ -13,7 +13,7 @@ export default function Home() {
   const glowRef = useRef<HTMLDivElement>(null);
   const starsRef = useRef<HTMLDivElement>(null);
   const roadPathRef = useRef<SVGPathElement>(null);
-  const carGroupRef = useRef<SVGSVGElement>(null);
+  const carGroupRef = useRef<HTMLDivElement>(null);
   const roadSectionRef = useRef<HTMLElement>(null);
   const roadPinRef = useRef<HTMLDivElement>(null);
   const roadSvgRef = useRef<SVGSVGElement>(null);
@@ -548,32 +548,20 @@ export default function Home() {
               />
             </svg>
 
-            <svg
+            <div
               ref={carGroupRef}
               className="car-group"
               id="carGroup"
-              viewBox="0 0 100 60"
             >
-              <ellipse
-                cx="50"
-                cy="54"
-                rx="34"
-                ry="5"
-                fill="rgba(0,0,0,0.35)"
-              />
-              <path
-                d="M10,40 Q14,20 34,18 L64,18 Q80,18 86,34 L92,40 Q92,46 86,46 L14,46 Q8,46 8,40 Z"
-                fill="#ffb454"
-              />
-              <path
-                d="M32,19 Q40,6 56,6 Q70,6 76,19 Z"
-                fill="#1a1526"
-                opacity="0.9"
-              />
-              <circle cx="28" cy="46" r="9" fill="#0e1016" stroke="#4ff3c9" strokeWidth="2" />
-              <circle cx="74" cy="46" r="9" fill="#0e1016" stroke="#4ff3c9" strokeWidth="2" />
-              <circle cx="90" cy="36" r="4" fill="#fff6d8" />
-            </svg>
+              <svg className="car-svg" viewBox="0 0 100 60">
+                <ellipse cx="50" cy="54" rx="34" ry="5" fill="rgba(0,0,0,0.35)" />
+                <path d="M10,40 Q14,20 34,18 L64,18 Q80,18 86,34 L92,40 Q92,46 86,46 L14,46 Q8,46 8,40 Z" fill="#ffb454" />
+                <path d="M32,19 Q40,6 56,6 Q70,6 76,19 Z" fill="#1a1526" opacity="0.9" />
+                <circle cx="28" cy="46" r="9" fill="#0e1016" stroke="#4ff3c9" strokeWidth="2" />
+                <circle cx="74" cy="46" r="9" fill="#0e1016" stroke="#4ff3c9" strokeWidth="2" />
+                <circle cx="90" cy="36" r="4" fill="#fff6d8" />
+              </svg>
+            </div>
 
             <div className="road-house" id="m1" ref={m1Ref}>
               <div className="house-label">

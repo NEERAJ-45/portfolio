@@ -184,6 +184,7 @@ nav{
 .house-label p{ font-size:0.75rem; color:var(--text-dim); line-height:1.4; }
 
 .car-group{ position:absolute; width:70px; height:40px; z-index:6; filter:drop-shadow(0 6px 14px rgba(0,0,0,0.5)); }
+.car-svg{ width:100%; height:auto; display:block; }
 
 .road-progress-label{
   position:absolute; top:32px; left:6vw; font-family:'JetBrains Mono'; font-size:0.75rem;
