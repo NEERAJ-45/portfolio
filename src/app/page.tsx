@@ -288,16 +288,32 @@ export default function Home() {
         },
       });
 
-      roadTl.to(car, {
-        motionPath: {
-          path: pts,
-          align: pts as unknown as SVGPathElement,
-          alignOrigin: [0.5, 0.6],
-          autoRotate: true,
-        },
-        ease: 'none',
+      const state = { p: 0 };
+      roadTl.to(state, {
+        p: 1,
         duration: 5,
-      }, 0);
+        ease: 'none',
+        onUpdate() {
+          const p = roadPathRef.current;
+          const se = roadSvgRef.current;
+          const pe = roadPinRef.current;
+          if (!p || !se || !pe) return;
+          const len = p.getTotalLength();
+          const pr = pe.getBoundingClientRect();
+          const sr = se.getBoundingClientRect();
+          const vb = se.viewBox.baseVal;
+          const sx = (sr.width || 1) / (vb.width || 1440);
+          const sy = (sr.height || 1) / (vb.height || 500);
+          const pt = p.getPointAtLength(len * state.p);
+          const x = sr.left - pr.left + pt.x * sx - 35;
+          const y = sr.top - pr.top + pt.y * sy - 36.7;
+          const d = Math.max(0.5, len * 0.002);
+          const pa = p.getPointAtLength(Math.max(0, len * state.p - d));
+          const pb = p.getPointAtLength(Math.min(len, len * state.p + d));
+          const a = Math.atan2(pb.y - pa.y, pb.x - pa.x) * (180 / Math.PI);
+          gsap.set(car, { x, y, rotation: a, transformOrigin: '35px 36.7px' });
+        },
+      });
 
       roadTl.to(
         '.road-sky',
