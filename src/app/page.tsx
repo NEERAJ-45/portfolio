@@ -591,11 +591,22 @@ export default function Home() {
             >
               <svg className="car-svg" viewBox="0 0 100 60">
                 <ellipse cx="50" cy="54" rx="34" ry="5" fill="rgba(0,0,0,0.35)" />
-                <path d="M10,40 Q14,20 34,18 L64,18 Q80,18 86,34 L92,40 Q92,46 86,46 L14,46 Q8,46 8,40 Z" fill="#ffb454" />
-                <path d="M32,19 Q40,6 56,6 Q70,6 76,19 Z" fill="#1a1526" opacity="0.9" />
-                <circle cx="28" cy="46" r="9" fill="#0e1016" stroke="#4ff3c9" strokeWidth="2" />
-                <circle cx="74" cy="46" r="9" fill="#0e1016" stroke="#4ff3c9" strokeWidth="2" />
-                <circle cx="90" cy="36" r="4" fill="#fff6d8" />
+                <path d="M8,40 L10,20 L30,14 L70,14 L90,20 L92,40 L90,48 L10,48 Z" fill="#ffb454" />
+                <path d="M10,20 L28,16 L72,16 L90,20 L86,24 L14,24 Z" fill="#c88a30" />
+                <path d="M30,14 L42,8 L58,8 L70,14 Z" fill="#1a1526" opacity="0.95" />
+                <path d="M28,16 L32,14 L68,14 L72,16 Z" fill="#0e1016" opacity="0.8" />
+                <path d="M6,38 L8,26 L12,24 L12,42 Z" fill="#ffe9a0" />
+                <path d="M94,38 L92,26 L88,24 L88,42 Z" fill="#ffe9a0" />
+                <path d="M8,44 L14,45 L12,48 L6,48 Z" fill="#ff6f91" />
+                <path d="M92,44 L86,45 L88,48 L94,48 Z" fill="#ff6f91" />
+                <path d="M6,42 L14,42 L12,44 L8,44 Z" fill="#ff6f91" opacity="0.6" />
+                <path d="M94,42 L86,42 L88,44 L92,44 Z" fill="#ff6f91" opacity="0.6" />
+                <path d="M14,24 L14,46 L18,46 L20,24 Z" fill="#1a1526" opacity="0.85" />
+                <path d="M86,24 L86,46 L82,46 L80,24 Z" fill="#1a1526" opacity="0.85" />
+                <circle cx="24" cy="48" r="8" fill="#0e1016" stroke="#4ff3c9" strokeWidth="2" />
+                <circle cx="76" cy="48" r="8" fill="#0e1016" stroke="#4ff3c9" strokeWidth="2" />
+                <circle cx="24" cy="48" r="3.5" fill="#3a3244" />
+                <circle cx="76" cy="48" r="3.5" fill="#3a3244" />
               </svg>
             </div>
 
