@@ -305,7 +305,14 @@ export default function Home() {
         0
       );
 
-      roadTl.to('.road-night-sky', { opacity: 1, duration: 5, ease: 'none' }, 0);
+      roadTl.to('.road-sky', { opacity: 0.25, duration: 5, ease: 'none' }, 0);
+      roadTl.to('.road-sky-night', { opacity: 1, duration: 5, ease: 'none' }, 0);
+      roadTl.to('.hill-back path', { fill: '#0d0818', duration: 5, ease: 'none' }, 0);
+      roadTl.to('.hill-mid path', { fill: '#07030c', duration: 5, ease: 'none' }, 0);
+      roadTl.to('.hill-front path', { fill: '#040108', duration: 5, ease: 'none' }, 0);
+      roadTl.to('#roadPath', { attr: { stroke: '#1e1a24' }, duration: 5, ease: 'none' }, 0);
+      roadTl.to('#roadSvg path:last-child', { attr: { stroke: '#59506b' }, opacity: 0.2, duration: 5, ease: 'none' }, 0);
+      roadTl.to('.star', { opacity: 1, duration: 5, ease: 'none' }, 0);
       roadTl.to('.road-sun', { opacity: 0, duration: 4, ease: 'none' }, 0);
       roadTl.to('.road-moon', { opacity: 1, duration: 4, ease: 'none' }, 0.5);
 
@@ -504,6 +511,7 @@ export default function Home() {
               03 · The Journey — scroll to drive
             </div>
             <div className="road-sky" />
+            <div className="road-sky-night" />
             <div className="road-stars" ref={starsRef} />
             <div className="road-sun" />
             <svg className="road-moon" viewBox="0 0 100 100">
@@ -661,7 +669,6 @@ export default function Home() {
                 <rect x="24" y="38" width="12" height="13" fill="#0a0d15" rx="1"/>
               </svg>
             </div>
-            <div className="road-night-sky" />
           </div>
         </section>
 
