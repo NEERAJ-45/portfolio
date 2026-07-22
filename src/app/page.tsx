@@ -39,7 +39,8 @@ export default function Home() {
     }
     setSpacerHeight();
     window.addEventListener('resize', setSpacerHeight);
-    window.addEventListener('load', () => setTimeout(setSpacerHeight, 300));
+    if (document.readyState !== 'complete')
+      window.addEventListener('load', () => setTimeout(setSpacerHeight, 300));
 
     function raf() {
       targetY = window.scrollY;
@@ -331,7 +332,8 @@ export default function Home() {
       ScrollTrigger.refresh();
     };
 
-    window.addEventListener('load', initRoad);
+    if (document.readyState === 'complete') initRoad();
+    else window.addEventListener('load', initRoad);
     window.addEventListener('resize', () => {
       positionMilestones();
       buildRoadTimeline();
