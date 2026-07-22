@@ -251,10 +251,29 @@ export default function Home() {
     function buildRoadTimeline() {
       const path = roadPathRef.current;
       const car = carGroupRef.current;
-      if (!path || !car) return;
+      const svg = roadSvgRef.current;
+      const pin = roadPinRef.current;
+      if (!path || !car || !svg || !pin) return;
 
       if (roadTl) {
         roadTl.scrollTrigger && roadTl.scrollTrigger.kill();
+        roadTl.kill();
+      }
+
+      const svgRect = svg.getBoundingClientRect();
+      const pinRect = pin.getBoundingClientRect();
+      const vb = svg.viewBox.baseVal;
+      const sx = (svgRect.width || 1) / (vb.width || 1440);
+      const sy = (svgRect.height || 1) / (vb.height || 500);
+      const len = path.getTotalLength();
+      const steps = 100;
+      const pts: { x: number; y: number }[] = [];
+      for (let i = 0; i <= steps; i++) {
+        const pt = path.getPointAtLength(len * (i / steps));
+        pts.push({
+          x: svgRect.left - pinRect.left + pt.x * sx,
+          y: svgRect.top - pinRect.top + pt.y * sy,
+        });
       }
 
       roadTl = gsap.timeline({
@@ -263,25 +282,21 @@ export default function Home() {
           start: 'top top',
           end: 'bottom bottom',
           scrub: 0.6,
-          pin: roadPinRef.current,
+          pin: pin,
           anticipatePin: 1,
         },
       });
 
-      roadTl.to(
-        car,
-        {
-          motionPath: {
-            path: path,
-            align: path,
-            alignOrigin: [0.5, 0.6],
-            autoRotate: true,
-          },
-          ease: 'none',
-          duration: 5,
+      roadTl.to(car, {
+        motionPath: {
+          path: pts,
+          align: pts as unknown as SVGPathElement,
+          alignOrigin: [0.5, 0.6],
+          autoRotate: true,
         },
-        0
-      );
+        ease: 'none',
+        duration: 5,
+      }, 0);
 
       roadTl.to(
         '.road-sky',
@@ -319,6 +334,7 @@ export default function Home() {
     window.addEventListener('load', initRoad);
     window.addEventListener('resize', () => {
       positionMilestones();
+      buildRoadTimeline();
       ScrollTrigger.refresh();
     });
 
