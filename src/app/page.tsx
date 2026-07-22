@@ -313,8 +313,8 @@ export default function Home() {
       roadTl.to('#roadPath', { attr: { stroke: '#1e1a24' }, duration: 5, ease: 'none' }, 0);
       roadTl.to('#roadSvg path:last-child', { attr: { stroke: '#59506b' }, opacity: 0.2, duration: 5, ease: 'none' }, 0);
       roadTl.to('.star', { opacity: 1, duration: 5, ease: 'none' }, 0);
-      roadTl.to('.road-sun', { opacity: 0, duration: 4, ease: 'none' }, 0);
-      roadTl.to('.road-moon', { opacity: 1, duration: 4, ease: 'none' }, 0.5);
+      roadTl.to('.road-sun', { opacity: 0, duration: 2, ease: 'none' }, 0);
+      roadTl.to('.road-moon', { opacity: 1, duration: 2, ease: 'none' }, 1.5);
 
       milestoneMeta.forEach((m, i) => {
         if (!m.el) return;
