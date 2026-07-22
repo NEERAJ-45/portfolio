@@ -504,10 +504,18 @@ export default function Home() {
               03 · The Journey — scroll to drive
             </div>
             <div className="road-sky" />
-            <div className="road-night-sky" />
             <div className="road-stars" ref={starsRef} />
             <div className="road-sun" />
-            <div className="road-moon" />
+            <svg className="road-moon" viewBox="0 0 100 100">
+              <defs>
+                <mask id="moonMask">
+                  <rect width="100" height="100" fill="black" />
+                  <circle cx="50" cy="50" r="42" fill="white" />
+                  <circle cx="68" cy="42" r="42" fill="black" />
+                </mask>
+              </defs>
+              <circle cx="50" cy="50" r="42" fill="#dce8f4" mask="url(#moonMask)" />
+            </svg>
 
             <svg
               className="hill hill-back"
@@ -653,6 +661,7 @@ export default function Home() {
                 <rect x="24" y="38" width="12" height="13" fill="#0a0d15" rx="1"/>
               </svg>
             </div>
+            <div className="road-night-sky" />
           </div>
         </section>
 
