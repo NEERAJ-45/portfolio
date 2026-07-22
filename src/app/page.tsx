@@ -234,14 +234,15 @@ export default function Home() {
         const left = (svgRect.left - pinRect.left) + xRatio * svgRect.width;
         const top = (svgRect.top - pinRect.top) + yRatio * svgRect.height;
         let finalLeft: number;
+        const hw = 40;
         if (m.side === 'left') {
-          finalLeft = left - 330;
-          if (finalLeft < 20) finalLeft = left + 60;
+          finalLeft = left - hw - 16;
+          if (finalLeft < 10) finalLeft = left + 16;
         } else {
-          finalLeft = left + 60;
+          finalLeft = left + 16;
         }
         m.el.style.left = finalLeft + 'px';
-        m.el.style.top = top - 150 + 'px';
+        m.el.style.top = top - 48 + 'px';
       });
     }
 
@@ -290,12 +291,17 @@ export default function Home() {
 
       milestoneMeta.forEach((m, i) => {
         if (!m.el) return;
+        const windows = m.el.querySelectorAll<SVGRectElement>('.house-window');
         roadTl!.fromTo(
           m.el,
           { autoAlpha: 0, y: 24 },
           { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' },
           i - 0.15
         );
+        if (windows.length) {
+          roadTl!.to(windows, { opacity: 1, duration: 0.4, ease: 'power2.out' }, i - 0.1);
+          roadTl!.to(windows, { opacity: 0.4, duration: 0.4, ease: 'power2.in' }, i + 0.6);
+        }
         roadTl!.to(
           m.el,
           { autoAlpha: 0, y: -16, duration: 0.5, ease: 'power2.in' },
@@ -551,45 +557,75 @@ export default function Home() {
               <circle cx="90" cy="36" r="4" fill="#fff6d8" />
             </svg>
 
-            <div className="road-milestone" id="m1" ref={m1Ref}>
-              <span className="yr">2019 — Frontend Intern</span>
-              <h3>PixelCraft Studio</h3>
-              <p>
-                Cut my teeth on landing pages and learned that a button&apos;s
-                hover state can make or break a first impression.
-              </p>
+            <div className="road-house" id="m1" ref={m1Ref}>
+              <div className="house-label">
+                <span className="yr">2019 · Frontend Intern</span>
+                <h3>PixelCraft Studio</h3>
+                <p>Landing pages, first impressions, hover states that hit.</p>
+              </div>
+              <svg className="house-svg" viewBox="0 0 60 55">
+                <polygon points="2,22 30,4 58,22" fill="#2a1e38" stroke="#3a3244" strokeWidth="1.5"/>
+                <rect x="6" y="21" width="48" height="30" fill="#141a28" stroke="#3a3244" strokeWidth="1.5" rx="2"/>
+                <rect x="14" y="28" width="10" height="10" fill="#ffb454" opacity="0.4" rx="1" className="house-window"/>
+                <rect x="36" y="28" width="10" height="10" fill="#ffb454" opacity="0.4" rx="1" className="house-window"/>
+                <rect x="24" y="38" width="12" height="13" fill="#0a0d15" rx="1"/>
+              </svg>
             </div>
-            <div className="road-milestone" id="m2" ref={m2Ref}>
-              <span className="yr">2020 — Frontend Developer</span>
-              <h3>NimbusTech</h3>
-              <p>
-                Built and maintained a component design system used across six
-                product teams.
-              </p>
+            <div className="road-house" id="m2" ref={m2Ref}>
+              <div className="house-label">
+                <span className="yr">2020 · Frontend Developer</span>
+                <h3>NimbusTech</h3>
+                <p>Design system across six product teams, one component at a time.</p>
+              </div>
+              <svg className="house-svg" viewBox="0 0 60 55">
+                <polygon points="2,22 30,4 58,22" fill="#2a1e38" stroke="#3a3244" strokeWidth="1.5"/>
+                <rect x="6" y="21" width="48" height="30" fill="#141a28" stroke="#3a3244" strokeWidth="1.5" rx="2"/>
+                <rect x="14" y="28" width="10" height="10" fill="#ffb454" opacity="0.4" rx="1" className="house-window"/>
+                <rect x="36" y="28" width="10" height="10" fill="#ffb454" opacity="0.4" rx="1" className="house-window"/>
+                <rect x="24" y="38" width="12" height="13" fill="#0a0d15" rx="1"/>
+              </svg>
             </div>
-            <div className="road-milestone" id="m3" ref={m3Ref}>
-              <span className="yr">2022 — Full-Stack Developer</span>
-              <h3>Skyline Labs</h3>
-              <p>
-                Led a ground-up rebuild of the core product, cutting load time
-                by 60%.
-              </p>
+            <div className="road-house" id="m3" ref={m3Ref}>
+              <div className="house-label">
+                <span className="yr">2022 · Full-Stack Developer</span>
+                <h3>Skyline Labs</h3>
+                <p>Ground-up rebuild, 60% faster load, one very caffeinated lead.</p>
+              </div>
+              <svg className="house-svg" viewBox="0 0 60 55">
+                <polygon points="2,22 30,4 58,22" fill="#2a1e38" stroke="#3a3244" strokeWidth="1.5"/>
+                <rect x="6" y="21" width="48" height="30" fill="#141a28" stroke="#3a3244" strokeWidth="1.5" rx="2"/>
+                <rect x="14" y="28" width="10" height="10" fill="#ffb454" opacity="0.4" rx="1" className="house-window"/>
+                <rect x="36" y="28" width="10" height="10" fill="#ffb454" opacity="0.4" rx="1" className="house-window"/>
+                <rect x="24" y="38" width="12" height="13" fill="#0a0d15" rx="1"/>
+              </svg>
             </div>
-            <div className="road-milestone" id="m4" ref={m4Ref}>
-              <span className="yr">2024 — Senior Creative Engineer</span>
-              <h3>Wanderframe</h3>
-              <p>
-                Shipped motion-first marketing sites and award-shortlisted
-                interactive experiences.
-              </p>
+            <div className="road-house" id="m4" ref={m4Ref}>
+              <div className="house-label">
+                <span className="yr">2024 · Senior Creative Engineer</span>
+                <h3>Wanderframe</h3>
+                <p>Motion-first marketing sites, award-shortlisted, shipped with style.</p>
+              </div>
+              <svg className="house-svg" viewBox="0 0 60 55">
+                <polygon points="2,22 30,4 58,22" fill="#2a1e38" stroke="#3a3244" strokeWidth="1.5"/>
+                <rect x="6" y="21" width="48" height="30" fill="#141a28" stroke="#3a3244" strokeWidth="1.5" rx="2"/>
+                <rect x="14" y="28" width="10" height="10" fill="#ffb454" opacity="0.4" rx="1" className="house-window"/>
+                <rect x="36" y="28" width="10" height="10" fill="#ffb454" opacity="0.4" rx="1" className="house-window"/>
+                <rect x="24" y="38" width="12" height="13" fill="#0a0d15" rx="1"/>
+              </svg>
             </div>
-            <div className="road-milestone" id="m5" ref={m5Ref}>
-              <span className="yr">2026 — Present</span>
-              <h3>Open to the next chapter</h3>
-              <p>
-                Freelancing, building side projects, and looking for a team that
-                scrolls as far as I do.
-              </p>
+            <div className="road-house" id="m5" ref={m5Ref}>
+              <div className="house-label">
+                <span className="yr">2026 · Present</span>
+                <h3>Open to the next chapter</h3>
+                <p>Freelancing, side projects, and a team that scrolls as far as I do.</p>
+              </div>
+              <svg className="house-svg" viewBox="0 0 60 55">
+                <polygon points="2,22 30,4 58,22" fill="#2a1e38" stroke="#3a3244" strokeWidth="1.5"/>
+                <rect x="6" y="21" width="48" height="30" fill="#141a28" stroke="#3a3244" strokeWidth="1.5" rx="2"/>
+                <rect x="14" y="28" width="10" height="10" fill="#ffb454" opacity="0.4" rx="1" className="house-window"/>
+                <rect x="36" y="28" width="10" height="10" fill="#ffb454" opacity="0.4" rx="1" className="house-window"/>
+                <rect x="24" y="38" width="12" height="13" fill="#0a0d15" rx="1"/>
+              </svg>
             </div>
           </div>
         </section>
