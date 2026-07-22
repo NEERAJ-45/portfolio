@@ -261,22 +261,6 @@ export default function Home() {
         roadTl.kill();
       }
 
-      const svgRect = svg.getBoundingClientRect();
-      const pinRect = pin.getBoundingClientRect();
-      const vb = svg.viewBox.baseVal;
-      const sx = (svgRect.width || 1) / (vb.width || 1440);
-      const sy = (svgRect.height || 1) / (vb.height || 500);
-      const len = path.getTotalLength();
-      const steps = 100;
-      const pts: { x: number; y: number }[] = [];
-      for (let i = 0; i <= steps; i++) {
-        const pt = path.getPointAtLength(len * (i / steps));
-        pts.push({
-          x: svgRect.left - pinRect.left + pt.x * sx,
-          y: svgRect.top - pinRect.top + pt.y * sy,
-        });
-      }
-
       roadTl = gsap.timeline({
         scrollTrigger: {
           trigger: roadSectionRef.current,
@@ -339,6 +323,20 @@ export default function Home() {
           { autoAlpha: 0, y: -16, duration: 0.5, ease: 'power2.in' },
           i + 0.65
         );
+      });
+
+      const sp = path.getPointAtLength(0);
+      const pr = pin.getBoundingClientRect();
+      const sr = svg.getBoundingClientRect();
+      const vbb = svg.viewBox.baseVal;
+      const sxs = (sr.width || 1) / (vbb.width || 1440);
+      const sys = (sr.height || 1) / (vbb.height || 500);
+      gsap.set(car, {
+        x: sr.left - pr.left + sp.x * sxs - 35,
+        y: sr.top - pr.top + sp.y * sys - 36.7,
+        rotation: 0,
+        transformOrigin: '35px 36.7px',
+        autoAlpha: 1,
       });
     }
 

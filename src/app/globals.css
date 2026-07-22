@@ -183,7 +183,7 @@ nav{
 .house-label h3{ font-size:0.95rem; margin:6px 0 4px; font-weight:600; }
 .house-label p{ font-size:0.75rem; color:var(--text-dim); line-height:1.4; }
 
-.car-group{ position:absolute; width:70px; height:40px; z-index:6; filter:drop-shadow(0 6px 14px rgba(0,0,0,0.5)); }
+.car-group{ position:absolute; width:70px; height:40px; z-index:6; filter:drop-shadow(0 6px 14px rgba(0,0,0,0.5)); opacity:0; }
 .car-svg{ width:100%; height:auto; display:block; }
 
 .road-progress-label{
