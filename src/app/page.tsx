@@ -305,6 +305,10 @@ export default function Home() {
         0
       );
 
+      roadTl.to('.road-night-sky', { opacity: 1, duration: 5, ease: 'none' }, 0);
+      roadTl.to('.road-sun', { opacity: 0, duration: 4, ease: 'none' }, 0);
+      roadTl.to('.road-moon', { opacity: 1, duration: 4, ease: 'none' }, 0.5);
+
       milestoneMeta.forEach((m, i) => {
         if (!m.el) return;
         const windows = m.el.querySelectorAll<SVGRectElement>('.house-window');
@@ -500,8 +504,10 @@ export default function Home() {
               03 · The Journey — scroll to drive
             </div>
             <div className="road-sky" />
+            <div className="road-night-sky" />
             <div className="road-stars" ref={starsRef} />
             <div className="road-sun" />
+            <div className="road-moon" />
 
             <svg
               className="hill hill-back"

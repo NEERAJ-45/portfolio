@@ -155,11 +155,20 @@ nav{
   position:absolute; inset:0;
   background:linear-gradient(180deg, #0a0d18 0%, #171226 30%, #3a2140 55%, #7a3b4d 72%, #d97b52 88%, #ffb454 100%);
 }
-.road-stars{ position:absolute; inset:0 0 55% 0; }
+.road-night-sky{
+  position:absolute; inset:0; opacity:0; z-index:2;
+  background:linear-gradient(180deg, #02040a 0%, #060e24 25%, #0f1235 45%, rgba(20,10,46,0.7) 58%, rgba(10,5,20,0.25) 70%, transparent 85%);
+}
+.road-stars{ position:absolute; inset:0 0 55% 0; z-index:2; }
 .star{ position:absolute; width:2px; height:2px; background:#fff; border-radius:50%; opacity:0.7; }
 .road-sun{
-  position:absolute; left:50%; top:38%; width:120px; height:120px; border-radius:50%;
+  position:absolute; left:50%; top:38%; width:120px; height:120px; border-radius:50%; z-index:3;
   background:radial-gradient(circle, #ffe9c7, #ffb454 55%, rgba(255,180,84,0) 75%);
+  transform:translate(-50%,-50%); filter:blur(0.5px);
+}
+.road-moon{
+  position:absolute; left:50%; top:32%; width:80px; height:80px; border-radius:50%; z-index:3; opacity:0;
+  background:radial-gradient(circle, #eaf0f8, #8db4d4 50%, rgba(141,180,212,0) 72%);
   transform:translate(-50%,-50%); filter:blur(0.5px);
 }
 .hill{ position:absolute; bottom:0; left:0; width:100%; }
