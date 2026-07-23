@@ -20,7 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NEERAJ Mehta — Creative Developer",
+  title: "NEERAJ Surnis — Creative Developer",
   description:
     "Creative developer crafting fast, motion-rich web products — where clean engineering meets storytelling, scroll, and a little bit of showing off.",
 };
