@@ -354,9 +354,9 @@ export default function Home() {
     // 6. SKILLS MARQUEES WITH VELOCITY SENSITIVITY
     // -------------------------------------------------------------
     const skillSets = [
-      ['React', 'TypeScript', 'Next.js', 'GSAP', 'WebGL', 'Three.js', 'Tailwind'],
-      ['Node.js', 'Framer Motion', 'Figma', 'PostgreSQL', 'GraphQL', 'Docker', 'AWS'],
-      ['Python', 'Redux Toolkit', 'Vite', 'Sass/SCSS', 'MongoDB', 'Git/GitHub', 'Jest'],
+      ['Java', 'Spring Boot', 'Kafka', 'REST APIs', 'Node.js', 'Python', 'JavaScript'],
+      ['React', 'Next.js', 'PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'Oracle Database', 'PL/SQL'],
+      ['Linux', 'Docker', 'AWS (EC2/S3)', 'CloudWatch', 'X-Ray', 'CI/CD', 'Git', 'Postman', 'Jira'],
     ];
     const rowColors = ['#c5ff7c', '#ffb454', '#ff6f91'];
 
@@ -750,7 +750,7 @@ export default function Home() {
             <span>04 · Contact</span>
           </a>
           <div className="menu-meta">
-            NEERAJ SURNIS — MUMBAI, INDIA
+            NEERAJ SURNIS — MAHARASHTRA, INDIA
           </div>
         </div>
       </div>
@@ -761,37 +761,38 @@ export default function Home() {
         {/* HERO */}
         <section className="hero" id="hero">
           <div className="hero-figure-bg">01</div>
-          <div className="hero-eyebrow">Creative Dev &amp; Tech Specimen</div>
+          <div className="hero-eyebrow">Distributed Systems &amp; Payments</div>
           <h1>
             <div className="line">
               <span>Hi, I&apos;m NEERAJ —</span>
             </div>
             <div className="line">
               <span>
-                I craft <span className="accent-lime">interfaces</span>
+                I build <span className="accent-lime">architectures</span>
               </span>
             </div>
             <div className="line">
               <span>
-                that <span className="accent-amber">move</span> &amp; mean it.
+                that <span className="accent-amber">scale</span> &amp; secure data.
               </span>
             </div>
           </h1>
           <p className="hero-sub">
-            A creative engineering playground where high-contrast design, physics-responsive 
-            micro-interactions, and storytelling scroll paths collide. Shipped from Mumbai, India.
+            Backend Software Engineer specializing in payments, event-driven microservices, 
+            and high-volume transaction processing (Spring Boot, Java, Kafka, Redis, AWS). 
+            Proficient across the full-stack.
           </p>
           <div className="hero-ctas">
             <a href="#projects" className="btn btn-primary" data-nav>
               Explore work →
             </a>
             <a href="#contact" className="btn btn-ghost" data-nav>
-              Initiate contact
+              Get in touch
             </a>
           </div>
           <div className="hero-scrollcue">
             <div className="scroll-line" />
-            Scroll to pilot
+            Scroll to voyage
           </div>
         </section>
 
@@ -822,7 +823,7 @@ export default function Home() {
         <section className="road-section" id="experience" ref={roadSectionRef}>
           <div className="road-pin" ref={roadPinRef}>
             <div className="road-progress-label">
-              03 · Voyage Timeline — scroll to drive voyager
+              03 · Voyage Timeline — scroll to navigate journey
             </div>
             <div className="road-sky" />
             <div className="road-sky-night" />
@@ -928,9 +929,9 @@ export default function Home() {
             {/* MILESTONE CELESTIAL STATIONS */}
             <div className="road-house" id="m1" ref={m1Ref}>
               <div className="house-label">
-                <span className="yr">2019 · Frontend Intern</span>
-                <h3>PixelCraft Studio</h3>
-                <p>Crafted immersive landing grids, first-rate visual states, and high-fidelity fluid scroll containers.</p>
+                <span className="yr">May 2024 – Aug 2024</span>
+                <h3>Tiyara Innovations LLP</h3>
+                <p>Full Stack Intern · Secured data flows, JWT user sessions, booking validation logics, and REST API pathways.</p>
               </div>
               <svg className="house-svg" viewBox="0 0 50 50">
                 {/* Futuristic Satellite Station */}
@@ -944,9 +945,9 @@ export default function Home() {
 
             <div className="road-house" id="m2" ref={m2Ref}>
               <div className="house-label">
-                <span className="yr">2020 · Frontend Developer</span>
-                <h3>NimbusTech</h3>
-                <p>Architected comprehensive React design systems and high-contrast motion components across six product squads.</p>
+                <span className="yr">Nov 2024 – Feb 2025</span>
+                <h3>Sainisoft Infotech</h3>
+                <p>Software Developer Intern · Integrated course workflows supporting 5K+ users. Speeded state loads by 40%.</p>
               </div>
               <svg className="house-svg" viewBox="0 0 50 50">
                 <circle cx="25" cy="25" r="10" fill="#141a28" stroke="#ffb454" strokeWidth="2" />
@@ -958,9 +959,9 @@ export default function Home() {
 
             <div className="road-house" id="m3" ref={m3Ref}>
               <div className="house-label">
-                <span className="yr">2022 · Full-Stack Developer</span>
-                <h3>Skyline Labs</h3>
-                <p>Spearheaded end-to-end framework rebuilds, implementing 60% faster runtime optimizations and robust APIs.</p>
+                <span className="yr">Dec 2025 – Present</span>
+                <h3>Maximus Infoware</h3>
+                <p>Software Engineer · Event-driven Spring Boot backends, Kafka validation pipelines, RBAC securing 10K+ transactions, and Oracle PL/SQL tuning by 40%.</p>
               </div>
               <svg className="house-svg" viewBox="0 0 50 50">
                 <polygon points="25,5 45,40 5,40" fill="#141a28" stroke="#ff6f91" strokeWidth="2" />
@@ -970,9 +971,9 @@ export default function Home() {
 
             <div className="road-house" id="m4" ref={m4Ref}>
               <div className="house-label">
-                <span className="yr">2024 · Senior Creative Engineer</span>
-                <h3>Wanderframe</h3>
-                <p>Constructed motion-first storytelling sites using custom WebGL canvas layouts, winning multiple agency awards.</p>
+                <span className="yr">Ongoing</span>
+                <h3>Freelance Projects</h3>
+                <p>Software Consultant · Developing custom server microservices, third-party payment integrations, and deploying via Docker on AWS.</p>
               </div>
               <svg className="house-svg" viewBox="0 0 50 50">
                 <rect x="10" y="10" width="30" height="30" fill="#141a28" stroke="#c5ff7c" strokeWidth="2" rx="4" />
@@ -983,9 +984,9 @@ export default function Home() {
 
             <div className="road-house" id="m5" ref={m5Ref}>
               <div className="house-label">
-                <span className="yr">2026 · Present</span>
-                <h3>Open to Voyage</h3>
-                <p>Architecting freelance WebGL modules, side tools, and looking to join another high-end engineering crew.</p>
+                <span className="yr">Graduating 2026</span>
+                <h3>DKTE, Ichalkaranji</h3>
+                <p>B.Tech in Computer Science · Solid academic training in distributed databases, software engineering patterns, and systems (CGPA: 7.86).</p>
               </div>
               <svg className="house-svg" viewBox="0 0 50 50">
                 <polygon points="25,2 48,18 39,45 11,45 2,18" fill="#141a28" stroke="#6366f1" strokeWidth="2" />
@@ -1010,17 +1011,20 @@ export default function Home() {
               <span className="num">01</span>
               <div className="glow-orb" />
               <div className="project-tags">
-                <span>React</span>
-                <span>Three.js</span>
-                <span>Stripe API</span>
+                <span>Java 21</span>
+                <span>Spring Boot</span>
+                <span>Kafka</span>
+                <span>Redis</span>
+                <span>Postgres</span>
+                <span>AWS</span>
               </div>
-              <h3>Aurora Commerce</h3>
+              <h3>RevPay Payment Platform</h3>
               <p>
-                An e-commerce gateway containing custom 3D configurators, GLTF texture swaps, 
-                and sub-second state checkouts.
+                Distributed event-driven payments using Spring Boot microservices and Kafka events. 
+                Optimistic locks, Redis idempotency keys, and the Outbox Pattern ensure zero lost updates or duplicate charges.
               </p>
               <span className="project-link">
-                View case study{' '}
+                View Repository{' '}
                 <svg
                   width="14"
                   height="14"
@@ -1038,17 +1042,19 @@ export default function Home() {
               <span className="num">02</span>
               <div className="glow-orb" />
               <div className="project-tags">
-                <span>Next.js</span>
-                <span>WebSockets</span>
-                <span>D3.js Charts</span>
+                <span>Node.js</span>
+                <span>Express</span>
+                <span>MongoDB</span>
+                <span>Firebase</span>
+                <span>Docker</span>
               </div>
-              <h3>Nimbus Dashboard</h3>
+              <h3>Document Workflow Manager</h3>
               <p>
-                Real-time server metrics dashboard featuring custom canvas streams mapping 40k+ 
-                live infrastructure nodes.
+                A 3-stage document approval pipeline with RBAC. Features AES-256 client-side encryption, 
+                RSA-2048 key exchange, and Firebase push alerts for reviewers.
               </p>
               <span className="project-link">
-                View case study{' '}
+                View Repository{' '}
                 <svg
                   width="14"
                   height="14"
@@ -1066,17 +1072,19 @@ export default function Home() {
               <span className="num">03</span>
               <div className="glow-orb" />
               <div className="project-tags">
-                <span>GSAP</span>
-                <span>ScrollTrigger</span>
-                <span>SVG Draw</span>
+                <span>React</span>
+                <span>Next.js</span>
+                <span>REST APIs</span>
+                <span>Docker</span>
+                <span>AWS</span>
               </div>
-              <h3>Wanderframe Studio</h3>
+              <h3>Freelance Implementations</h3>
               <p>
-                Award-shortlisted marketing website built entirely around fluid narrative scroll paths 
-                and letter-split morphs.
+                Bespoke full-stack systems delivered for clients, streamlining dashboard metrics, 
+                third-party validations, and automating administrative workflows.
               </p>
               <span className="project-link">
-                View case study{' '}
+                View Works{' '}
                 <svg
                   width="14"
                   height="14"
@@ -1094,17 +1102,18 @@ export default function Home() {
               <span className="num">04</span>
               <div className="glow-orb" />
               <div className="project-tags">
-                <span>CRDTs</span>
-                <span>Node.js</span>
-                <span>Postgres</span>
+                <span>Spring Boot</span>
+                <span>React</span>
+                <span>MySQL</span>
+                <span>state-mgmt</span>
               </div>
-              <h3>EchoNotes</h3>
+              <h3>LMS Course Manager</h3>
               <p>
-                A collaborative offline-first workspace tool featuring multi-user cursor synch, 
-                Yjs documents, and vector embeds.
+                Admin dashboards supporting 5K+ users with role-based access. Includes optimized frontend state 
+                structures reducing load times by 40%.
               </p>
               <span className="project-link">
-                View case study{' '}
+                View Case Study{' '}
                 <svg
                   width="14"
                   height="14"
@@ -1125,21 +1134,21 @@ export default function Home() {
         <section className="contact" id="contact">
           <span className="eyebrow">05 · Contact</span>
           <h2>
-            Let&apos;s build something <span className="accent-amber">worth driving through.</span>
+            Let&apos;s build secure, <span className="accent-amber">scale-ready engines.</span>
           </h2>
-          <a href="mailto:hello@neerajsurnis.dev" className="contact-btn">
-            hello@neerajsurnis.dev
+          <a href="mailto:neerajsurnis@gmail.com" className="contact-btn">
+            neerajsurnis@gmail.com
           </a>
           <div className="socials">
-            <a href="#">GitHub</a>
-            <a href="#">LinkedIn</a>
-            <a href="#">X / Twitter</a>
-            <a href="#">Dribbble</a>
+            <a href="https://github.com/NEERAJ-45" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://linkedin.com/in/neeraj-surnis" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="tel:+919322696345">Call (+91 93226 96345)</a>
+            <a href="mailto:neerajsurnis@gmail.com">Email</a>
           </div>
           <footer>
-            <span>© 2026 NEERAJ Surnis</span>
+            <span>© 2026 Neeraj Surnis</span>
             <span>
-              Engineered with React · GSAP · Canvas Elements · Custom Scroller
+              Java · Spring Boot · Kafka · React · Next.js · GSAP
             </span>
           </footer>
         </section>
