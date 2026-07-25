@@ -71,19 +71,21 @@ export default function Home() {
 
     ScrollTrigger.addEventListener('refresh', setSpacerHeight);
 
-    const links = document.querySelectorAll('[data-nav]');
-    const onNavClick = (e: Event) => {
+    const onNavClick = (e: MouseEvent) => {
+      const anchor = (e.target as HTMLElement).closest('[data-nav]') as HTMLAnchorElement | null;
+      if (!anchor) return;
       e.preventDefault();
       setMenuOpen(false);
-      const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
+      const href = anchor.getAttribute('href');
       if (!href) return;
       const target = document.querySelector(href);
       if (target) {
-        const destY = target.getBoundingClientRect().top + currentY;
+        // Use offsetTop relative to the content container to handle the CSS-transform scroll
+        const destY = (target as HTMLElement).offsetTop;
         gsap.to(window, { scrollTo: destY, duration: 1.2, ease: 'power4.inOut', overwrite: 'auto' });
       }
     };
-    links.forEach((a) => a.addEventListener('click', onNavClick));
+    document.addEventListener('click', onNavClick);
 
     // Canvas starfield
     const canvas = canvasRef.current;
@@ -159,7 +161,7 @@ export default function Home() {
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', setSpacerHeight);
       ScrollTrigger.getAll().forEach(t => t.kill());
-      links.forEach((a) => a.removeEventListener('click', onNavClick));
+      document.removeEventListener('click', onNavClick);
       magnet.forEach((b) => { b.removeEventListener('mousemove', onMove); b.removeEventListener('mouseleave', onLeave); });
     };
   }, []);
