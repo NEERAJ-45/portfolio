@@ -133,6 +133,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       <div className="preloader-main">
         <div className="preloader-word-viewport">
           <div ref={wordGroupRef} className="preloader-word-group">
+            <span className="preloader-word-spacer" />
             <span ref={textRef} className="preloader-word">
               Hello
             </span>

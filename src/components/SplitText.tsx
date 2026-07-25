@@ -98,14 +98,19 @@ export default function SplitText({
       }
 
       if (targets.length) {
+        const isMobileDevice = typeof window !== 'undefined' &&
+          (window.matchMedia('(max-width: 768px)').matches || 'ontouchstart' in window);
+        const mobileDuration = isMobileDevice ? Math.min(duration, 0.6) : duration;
+        const mobileStagger = isMobileDevice ? Math.min(delay / 1000, 0.025) : delay / 1000;
+
         gsap.fromTo(
           targets,
           { ...from },
           {
             ...to,
-            duration,
+            duration: mobileDuration,
             ease,
-            stagger: delay / 1000,
+            stagger: mobileStagger,
             scrollTrigger: {
               trigger: el,
               start: 'top 95%',

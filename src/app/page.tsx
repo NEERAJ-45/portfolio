@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import MotionPathPlugin from 'gsap/MotionPathPlugin';
+import { AnimatePresence, motion } from 'framer-motion';
 import Preloader from '@/components/Preloader';
 import SplitText from '@/components/SplitText';
 import LogoLoop from '@/components/LogoLoop';
@@ -179,6 +180,12 @@ export default function Home() {
   const m3Ref = useRef<HTMLDivElement>(null);
   const m4Ref = useRef<HTMLDivElement>(null);
 
+  // Hamburger line refs for GSAP morph
+  const line1Ref = useRef<HTMLDivElement>(null);
+  const line2Ref = useRef<HTMLDivElement>(null);
+  // Scroll cue line ref for GSAP drip
+  const scrollDripRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     // -------------------------------------------------------------
     // 1. HARDWARE-ACCELERATED LERP SMOOTH SCROLLER
@@ -188,7 +195,9 @@ export default function Home() {
 
     let currentY = 0;
     let targetY = 0;
-    const LERP = 0.08;
+    // Use a higher LERP on mobile/touch for snappier native-feeling scroll
+    const isTouchDevice = window.matchMedia('(max-width: 768px)').matches;
+    const LERP = isTouchDevice ? 0.18 : 0.08;
     let isResizing = false;
 
     function setSpacerHeight() {
@@ -325,8 +334,44 @@ export default function Home() {
     addHoverListeners();
 
     // -------------------------------------------------------------
+    // 3b. GSAP HAMBURGER MORPH (replaces CSS transitions)
+    // -------------------------------------------------------------
+    const line1 = line1Ref.current;
+    const line2 = line2Ref.current;
+    if (line1 && line2) {
+      // Watch menuOpen via a MutationObserver on the button's class
+      const menuBtn = line1.closest('button');
+      if (menuBtn) {
+        const morphObserver = new MutationObserver(() => {
+          const isActive = menuBtn.classList.contains('menu-active');
+          if (isActive) {
+            gsap.to(line1, { rotate: 45, y: 8, backgroundColor: 'var(--lime)', duration: 0.4, ease: 'power3.out' });
+            gsap.to(line2, { rotate: -45, y: -8, backgroundColor: 'var(--lime)', duration: 0.4, ease: 'power3.out' });
+          } else {
+            gsap.to(line1, { rotate: 0, y: 0, backgroundColor: 'var(--text)', duration: 0.4, ease: 'power3.out' });
+            gsap.to(line2, { rotate: 0, y: 0, backgroundColor: 'var(--text)', duration: 0.4, ease: 'power3.out' });
+          }
+        });
+        morphObserver.observe(menuBtn, { attributes: true, attributeFilter: ['class'] });
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 3c. GSAP SCROLL CUE DRIP (replaces @keyframes scrollDrip)
+    // -------------------------------------------------------------
+    const scrollDrip = scrollDripRef.current;
+    if (scrollDrip) {
+      gsap.fromTo(
+        scrollDrip,
+        { yPercent: -100, opacity: 1 },
+        { yPercent: 100, opacity: 0.3, duration: 1.8, ease: 'power2.inOut', repeat: -1, repeatDelay: 0.1 }
+      );
+    }
+
+    // -------------------------------------------------------------
     // 4. INTERACTIVE CANVAS PARTICLE STARFIELD
     // -------------------------------------------------------------
+
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext('2d')!;
@@ -350,7 +395,8 @@ export default function Home() {
       }
 
       const particles: CosmicParticle[] = [];
-      const numParticles = 120;
+      const isMobileDevice = window.matchMedia('(max-width: 768px)').matches;
+      const numParticles = isMobileDevice ? 55 : 120;
       const colors = ['#c5ff7c', '#ffb454', '#ffffff', '#6366f1'];
 
       for (let i = 0; i < numParticles; i++) {
@@ -370,8 +416,10 @@ export default function Home() {
         ctx.clearRect(0, 0, width, height);
 
         // Calculate visual feedback based on scroll velocity and pointer position
+        // Lower warp threshold on mobile since LERP is higher (less velocity gap)
+        const warpThreshold = isMobileDevice ? 3 : 8;
         const velMultiplier = Math.min(6, 1 + Math.abs(lastVelocity) * 0.15);
-        const warpMode = Math.abs(lastVelocity) > 8;
+        const warpMode = Math.abs(lastVelocity) > warpThreshold;
 
         particles.forEach((p) => {
           // Parallax calculation using cursor coordinates
@@ -882,31 +930,63 @@ export default function Home() {
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle navigation menu"
         >
-          <div className="menu-line" />
-          <div className="menu-line" />
+          <div ref={line1Ref} className="menu-line" style={{ transformOrigin: 'center' }} />
+          <div ref={line2Ref} className="menu-line" style={{ transformOrigin: 'center' }} />
         </button>
       </nav>
 
-      {/* FULLSCREEN GLASSMORPHIC SLIDEOUT NAVIGATION MENU */}
-      <div className={`fullscreen-menu ${menuOpen ? 'is-open' : ''}`}>
-        <div className="menu-container">
-          <a href="#skills" className="menu-item" data-nav onClick={() => setMenuOpen(false)}>
-            <span>01 · Toolbox</span>
-          </a>
-          <a href="#experience" className="menu-item" data-nav onClick={() => setMenuOpen(false)}>
-            <span>02 · Journey</span>
-          </a>
-          <a href="#projects" className="menu-item" data-nav onClick={() => setMenuOpen(false)}>
-            <span>03 · Work</span>
-          </a>
-          <a href="#contact" className="menu-item" data-nav onClick={() => setMenuOpen(false)}>
-            <span>04 · Contact</span>
-          </a>
-          <div className="menu-meta">
-            NEERAJ SURNIS — MAHARASHTRA, INDIA
-          </div>
-        </div>
-      </div>
+      {/* FULLSCREEN GLASSMORPHIC NAVIGATION MENU — Framer Motion */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            className="fullscreen-menu is-open"
+            initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            animate={{ opacity: 1, backdropFilter: 'blur(20px)' }}
+            exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            onClick={() => setMenuOpen(false)}
+          >
+            <motion.div
+              className="menu-container"
+              onClick={(e) => e.stopPropagation()}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={{
+                visible: { transition: { staggerChildren: 0.07, delayChildren: 0.1 } },
+                hidden:  { transition: { staggerChildren: 0.04, staggerDirection: -1 } },
+              }}
+            >
+              {[
+                { href: '#skills',     label: '01 · Toolbox' },
+                { href: '#experience', label: '02 · Journey' },
+                { href: '#projects',   label: '03 · Work'    },
+                { href: '#contact',    label: '04 · Contact'  },
+              ].map(({ href, label }) => (
+                <a key={href} href={href} className="menu-item" data-nav onClick={() => setMenuOpen(false)}>
+                  <motion.span
+                    variants={{
+                      hidden:  { y: '110%', opacity: 0 },
+                      visible: { y: '0%',   opacity: 1, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } },
+                    }}
+                  >
+                    {label}
+                  </motion.span>
+                </a>
+              ))}
+              <motion.div
+                className="menu-meta"
+                variants={{
+                  hidden:  { opacity: 0, y: 16 },
+                  visible: { opacity: 0.6, y: 0, transition: { duration: 0.5, delay: 0.35, ease: 'easeOut' } },
+                }}
+              >
+                NEERAJ SURNIS — MAHARASHTRA, INDIA
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div ref={spacerRef} id="smooth-spacer" />
       <div ref={contentRef} id="smooth-content">
@@ -956,7 +1036,9 @@ export default function Home() {
             </a>
           </div>
           <div className="hero-scrollcue">
-            <div className="scroll-line" />
+            <div className="scroll-line">
+              <div ref={scrollDripRef} className="scroll-drip" />
+            </div>
             Scroll to voyage
           </div>
         </section>

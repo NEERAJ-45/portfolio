@@ -95,6 +95,7 @@ a {
   width: 100%;
   will-change: transform;
   z-index: 2;
+  backface-visibility: hidden;
 }
 
 /* ---------- CUSTOM PREMIUM CURSOR ---------- */
@@ -218,32 +219,18 @@ nav {
   width: 28px;
   height: 2px;
   background-color: var(--text);
-  transition: transform 0.4s ease, background-color 0.4s ease, width 0.4s ease;
+  /* transition removed — GSAP handles the morph */
 }
 
 .menu-toggle:hover .menu-line:first-child {
   width: 20px;
-  background-color: var(--lime);
 }
 
 .menu-toggle:hover .menu-line:last-child {
   width: 24px;
-  background-color: var(--lime);
 }
 
-.menu-active .menu-line:first-child {
-  transform: translateY(8px) rotate(45deg);
-  width: 28px !important;
-  background-color: var(--lime);
-}
-
-.menu-active .menu-line:last-child {
-  transform: translateY(-8px) rotate(-45deg);
-  width: 28px !important;
-  background-color: var(--lime);
-}
-
-/* Fullscreen Menu Overlay */
+/* Fullscreen Menu Overlay — opacity/visibility controlled by Framer Motion */
 .fullscreen-menu {
   position: fixed;
   inset: 0;
@@ -253,14 +240,6 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
-.fullscreen-menu.is-open {
-  opacity: 1;
-  visibility: visible;
 }
 
 .menu-container {
@@ -283,12 +262,7 @@ nav {
 
 .menu-item span {
   display: inline-block;
-  transform: translateY(100%);
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.fullscreen-menu.is-open .menu-item span {
-  transform: translateY(0);
+  /* transform/transition removed — Framer Motion variants handle reveal */
 }
 
 .menu-item:hover {
@@ -459,25 +433,20 @@ nav {
 .scroll-line {
   width: 1px;
   height: 50px;
-  background: linear-gradient(var(--lime), transparent);
+  background: rgba(197, 255, 124, 0.15);
   position: relative;
   overflow: hidden;
 }
 
-.scroll-line::after {
-  content: '';
+/* GSAP animates this child element — replaces @keyframes scrollDrip */
+.scroll-drip {
   position: absolute;
-  top: -100%;
+  top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: linear-gradient(var(--lime), transparent);
-  animation: scrollDrip 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-@keyframes scrollDrip {
-  0% { top: -100%; }
-  100% { top: 100%; }
+  will-change: transform;
 }
 
 /* ---------- SECTION COMMON ---------- */
@@ -811,12 +780,14 @@ section {
   backdrop-filter: blur(12px);
   padding: 40px;
   overflow: hidden;
-  min-height: 320px;
+  min-height: 380px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.4s;
   box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .project-card:hover {
@@ -878,6 +849,7 @@ section {
   font-size: 0.95rem;
   line-height: 1.6;
   max-width: 440px;
+  margin-bottom: 24px;
 }
 
 .project-link {
@@ -903,6 +875,166 @@ section {
 .project-card:hover .project-link svg {
   transform: translate(5px, -5px);
   stroke: var(--lime);
+}
+
+/* ---------- PROJECT CARD ACTIONS & BUTTONS ---------- */
+.project-card-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  z-index: 5;
+}
+
+.project-btn {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid var(--lime);
+  background: var(--lime);
+  color: #030408;
+}
+
+.project-btn:hover {
+  background: #d2ff96;
+  border-color: #d2ff96;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px var(--lime-glow);
+}
+
+.project-btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text);
+}
+
+.project-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--text);
+  color: var(--text);
+  transform: translateY(-2px);
+  box-shadow: none;
+}
+
+/* ---------- HUSTLE CUSTOM BADGE ---------- */
+.hustle-motto-tag {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--amber);
+  background: rgba(255, 180, 84, 0.06);
+  border: 1px solid rgba(255, 180, 84, 0.15);
+  padding: 4px 12px;
+  border-radius: 8px;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+/* ---------- CASE STUDY DETAILS MODAL ---------- */
+.fullscreen-project-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 4, 8, 0.96);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  z-index: 999999;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 60px 8vw;
+  animation: modalFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.fullscreen-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 36px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 24px;
+}
+
+.fullscreen-modal-close {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-dim);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fullscreen-modal-close:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: var(--text);
+  transform: rotate(90deg);
+}
+
+.hustle-pitch-box {
+  background: linear-gradient(135deg, rgba(255, 111, 145, 0.08) 0%, rgba(99, 102, 241, 0.04) 100%);
+  border: 1px solid rgba(255, 111, 145, 0.16);
+  border-radius: 20px;
+  padding: 24px;
+  line-height: 1.7;
+  color: #ff6f91;
+  font-style: italic;
+  font-weight: 500;
+  margin-bottom: 28px;
+}
+
+.hustle-grid-two {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+  margin-bottom: 28px;
+}
+
+.hustle-box-card {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.hustle-box-card h4 {
+  font-size: 1.15rem;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.hustle-box-card ul {
+  padding-left: 20px;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  line-height: 1.75;
+}
+
+.hustle-box-card li {
+  margin-bottom: 8px;
 }
 
 /* ---------- CONTACT SECTION ---------- */
@@ -1051,7 +1183,7 @@ footer span:last-child {
   display: inline-block;
   width: 6px;
   height: 6px;
-  background: #030408;
+  background: #82cf1d;
   border-radius: 50%;
   margin-left: 4px;
 }
@@ -1073,10 +1205,10 @@ footer span:last-child {
 }
 
 .preloader-word-group {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
 }
 
 .preloader-word {
@@ -1085,15 +1217,22 @@ footer span:last-child {
   font-weight: 600;
   color: #030408;
   text-align: center;
+  line-height: 1;
+}
+
+.preloader-word-spacer {
+  width: 10px;
+  height: 10px;
+  visibility: hidden;
+  flex-shrink: 0;
 }
 
 .preloader-word-dot {
-  position: absolute;
-  left: calc(100% + 8px);
   width: 10px;
   height: 10px;
-  background: #030408;
+  background: #82cf1d;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .preloader-footer {
@@ -1127,6 +1266,14 @@ footer span:last-child {
   .hero {
     padding: 0 6vw;
   }
+
+  /* Scroll cue: reposition from absolute to inline on mobile */
+  .hero-scrollcue {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    margin-top: 40px;
+  }
   
   .section-head {
     padding: 0 6vw;
@@ -1138,6 +1285,19 @@ footer span:last-child {
   
   .contact {
     padding: 120px 6vw 80px;
+  }
+  
+  /* Bigger tap target for hamburger on mobile */
+  .menu-toggle {
+    padding: 14px;
+    gap: 7px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .menu-line {
+    width: 26px;
+    height: 2px;
   }
   
   .custom-cursor,
