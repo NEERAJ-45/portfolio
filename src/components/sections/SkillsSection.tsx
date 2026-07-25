@@ -25,7 +25,7 @@ export default function SkillsSection() {
       <div className="section-head">
         <span className="eyebrow">02 · Toolbox</span>
         <h2>Modern Tech Stack.</h2>
-        <p>An aggregate of frameworks, graphics layers, and languages leveraged to build high-performance creative web environments.</p>
+        <p>An aggregate of secure frameworks, message brokers, and transactional databases leveraged to engineer high-throughput and resilient cloud systems.</p>
       </div>
       <div className="skills-container">
         <div className="skills-rows">

@@ -40,3 +40,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# nested folders
+**/node_modules/
+**/.next/
+**/dist/
+**/build/
+src/components/3d-rubiks-cube-one-shot/

@@ -4,6 +4,7 @@ import { useEffect, useRef, forwardRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SplitText from '@/components/SplitText';
+import InteractiveCube from '@/components/ui/InteractiveCube';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,33 +15,83 @@ interface HeroProps {
 const Hero = forwardRef<HTMLDivElement, HeroProps>(({ onReady }, ref) => {
   const scrollDripRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    gsap.set('.hero h1 .line span', { yPercent: 110 });
-    const heroTimeline = gsap.timeline({ paused: true })
-      .to('.hero h1 .line span', { yPercent: 0, duration: 1.2, stagger: 0.08, ease: 'power4.out' })
-      .from('.hero-eyebrow', { x: -20, duration: 0.8, ease: 'power3.out' }, '-=0.8')
-      .from('.hero-sub', { y: 15, duration: 0.8, ease: 'power2.out' }, '-=0.6')
-      .from('.hero-ctas .btn', { y: 12, duration: 0.6, stagger: 0.1, ease: 'power2.out' }, '-=0.5')
-      .from('.hero-scrollcue', { y: 8, duration: 0.6 }, '-=0.4');
+    useEffect(() => {
+      gsap.set('.hero h1 .line span', { yPercent: 110 });
+      gsap.set('.hero-right', { scale: 0.8, opacity: 0 });
+      
+      const heroTimeline = gsap.timeline({ paused: true })
+        .to('.hero h1 .line span', { yPercent: 0, duration: 1.2, stagger: 0.08, ease: 'power4.out' })
+        .from('.hero-sub', { y: 15, duration: 0.8, ease: 'power2.out' }, '-=0.6')
+        .from('.hero-ctas .btn', { y: 12, duration: 0.6, stagger: 0.1, ease: 'power2.out' }, '-=0.5')
+        .to('.hero-right', { scale: 1, opacity: 1, duration: 1.2, ease: 'power3.out' }, '-=0.8')
+        .from('.hero-scrollcue', { y: 8, duration: 0.6 }, '-=0.4');
 
     onReady(() => heroTimeline.play());
 
     const initHeroLetterHover = () => {
-      document.querySelectorAll('.hero h1 .line span').forEach((header) => {
-        const text = header.textContent || '';
-        if (header.classList.contains('accent-lime') || header.classList.contains('accent-amber') || text.includes('Hi,')) return;
-        const letters = text.split('').map((char) => {
-          if (char === ' ') return '&nbsp;';
-          return `<span class="letter-char" style="display:inline-block; transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">${char}</span>`;
-        }).join('');
-        header.innerHTML = letters;
+      const container = document.querySelector('.hero h1');
+      if (!container) return;
+
+      function splitTextIntoSpans(node: Node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          const text = node.textContent || '';
+          if (!text.trim()) return;
+          const parent = node.parentNode;
+          if (!parent) return;
+
+          if (
+            (parent as HTMLElement).classList?.contains('letter-char') ||
+            (parent as HTMLElement).classList?.contains('hero-split-name') ||
+            (parent as HTMLElement).closest?.('.hero-split-name')
+          ) {
+            return;
+          }
+
+          const fragment = document.createDocumentFragment();
+          for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            if (char === ' ') {
+              fragment.appendChild(document.createTextNode(' '));
+            } else {
+              const span = document.createElement('span');
+              span.className = 'letter-char';
+              span.style.display = 'inline-block';
+              span.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+              span.textContent = char;
+              fragment.appendChild(span);
+            }
+          }
+          parent.replaceChild(fragment, node);
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          const el = node as HTMLElement;
+          if (el.classList?.contains('hero-split-name')) return;
+          const children = Array.from(el.childNodes);
+          children.forEach(splitTextIntoSpans);
+        }
+      }
+
+      const lines = document.querySelectorAll('.hero h1 .line');
+      lines.forEach((line, index) => {
+        if (index === 0) return;
+        splitTextIntoSpans(line);
       });
+
       document.querySelectorAll('.letter-char').forEach((char) => {
-        char.addEventListener('mouseenter', () => {
-          gsap.to(char, { scale: 1.35, y: -8, rotation: Math.random() * 20 - 10, color: '#c5ff7c', duration: 0.3 });
+        const element = char as HTMLElement;
+        const parent = element.parentNode as HTMLElement;
+        let originalColor = '#f3f4f6';
+        if (parent && (parent.classList?.contains('accent-lime') || parent.closest?.('.accent-lime'))) {
+          originalColor = 'var(--lime)';
+        } else if (parent && (parent.classList?.contains('accent-amber') || parent.closest?.('.accent-amber'))) {
+          originalColor = 'var(--amber)';
+        }
+        element.style.color = originalColor;
+
+        element.addEventListener('mouseenter', () => {
+          gsap.to(element, { scale: 1.35, y: -8, rotation: Math.random() * 20 - 10, color: '#c5ff7c', duration: 0.3 });
         });
-        char.addEventListener('mouseleave', () => {
-          gsap.to(char, { scale: 1, y: 0, rotation: 0, color: '#f3f4f6', duration: 0.5 });
+        element.addEventListener('mouseleave', () => {
+          gsap.to(element, { scale: 1, y: 0, rotation: 0, color: originalColor, duration: 0.5 });
         });
       });
     };
@@ -59,24 +110,30 @@ const Hero = forwardRef<HTMLDivElement, HeroProps>(({ onReady }, ref) => {
   return (
     <section className="hero" id="hero" ref={ref}>
       <div className="hero-figure-bg">01</div>
-      <div className="hero-eyebrow">Distributed Systems &amp; Payments</div>
-      <h1>
-        <div className="line">
-          <SplitText text="Hi, I'm NEERAJ —" className="hero-split-name" delay={45} duration={0.75}
-            ease="power3.out" splitType="chars" from={{ opacity: 0, y: 40 }} to={{ opacity: 1, y: 0 }}
-            threshold={0.1} textAlign="left" tag="span" />
+      <div className="hero-grid">
+        <div className="hero-left">
+          <h1>
+            <div className="line">
+              <SplitText text="Hi, I'm NEERAJ —" className="hero-split-name" delay={45} duration={0.75}
+                ease="power3.out" splitType="chars" from={{ opacity: 0, y: 40 }} to={{ opacity: 1, y: 0 }}
+                threshold={0.1} textAlign="left" tag="span" />
+            </div>
+            <div className="line"><span>I build <span className="accent-lime">distributed cloud systems</span></span></div>
+            <div className="line"><span>that scale to <span className="accent-amber">millions.</span></span></div>
+          </h1>
+          <p className="hero-sub">
+            Full Stack Cloud Engineer building highly resilient distributed architectures, 
+            event-driven microservices, and robust cloud infrastructures 
+            (Spring Boot, Kafka, Redis, AWS).
+          </p>
+          <div className="hero-ctas">
+            <a href="#projects" className="btn btn-primary" data-nav>Explore work →</a>
+            <a href="#contact" className="btn btn-ghost" data-nav>Get in touch</a>
+          </div>
         </div>
-        <div className="line"><span>I build <span className="accent-lime">architectures</span></span></div>
-        <div className="line"><span>that <span className="accent-amber">scale</span> &amp; secure data.</span></div>
-      </h1>
-      <p className="hero-sub">
-        Backend Software Engineer specializing in payments, event-driven microservices,
-        and high-volume transaction processing (Spring Boot, Java, Kafka, Redis, AWS).
-        Proficient across the full-stack.
-      </p>
-      <div className="hero-ctas">
-        <a href="#projects" className="btn btn-primary" data-nav>Explore work →</a>
-        <a href="#contact" className="btn btn-ghost" data-nav>Get in touch</a>
+        <div className="hero-right">
+          <InteractiveCube />
+        </div>
       </div>
       <div className="hero-scrollcue">
         <div className="scroll-line"><div ref={scrollDripRef} className="scroll-drip" /></div>
