@@ -12,8 +12,14 @@ type FormState = 'idle' | 'sending' | 'success' | 'error';
 
 function ContactModal({ onClose }: { onClose: () => void }) {
   const [formState, setFormState] = useState<FormState>('idle');
-  const [errorMsg, setErrorMsg] = useState('');
-  const [fields, setFields] = useState({ name: '', email: '', subject: '', message: '' });
+  const [errorMsg, setErrorMsg] = useState<string>('');
+  const [fields, setFields] = useState<{ name: string; email: string; subject: string; message: string }>({
+    name: '', email: '', subject: '', message: '',
+  });
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  // Only render portal on the client — document.body is undefined during SSR
+  useEffect(() => { setMounted(true); }, []);
 
   // Close on Escape key
   useEffect(() => {
@@ -54,6 +60,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
 
   // Portal escape: render directly on document.body so that
   // position:fixed works correctly despite the CSS-transform scroll container
+  if (!mounted) return null;
   return createPortal(
     <motion.div
       className="contact-modal-backdrop"
