@@ -23,7 +23,7 @@ export default function JourneySection() {
     const starsWrap = starsRef.current;
     if (starsWrap) {
       starsWrap.innerHTML = '';
-      for (let i = 0; i < 90; i++) {
+      for (let i = 0; i < (window.innerWidth <= 768 ? 50 : 90); i++) {
         const s = document.createElement('div');
         s.className = 'star';
         s.style.left = Math.random() * 100 + '%';
@@ -39,22 +39,21 @@ export default function JourneySection() {
       { id: '#m1', el: m1Ref.current, pct: 0.10, side: 'right' as const },
       { id: '#m2', el: m2Ref.current, pct: 0.35, side: 'right' as const },
       { id: '#m3', el: m3Ref.current, pct: 0.60, side: 'left' as const },
-      { id: '#m4', el: m4Ref.current, pct: 0.85, side: 'right' as const },
+      { id: '#m4', el: m4Ref.current, pct: 0.93, side: 'right' as const },
     ];
 
-    function positionMilestones() {
+    function positionMilestones(iconH = 50, labelHalfW = 140, sideOff = 50, rightOff = 10) {
       const path = roadPathRef.current;
       const pinRect = roadPinRef.current?.getBoundingClientRect();
       const svgRect = roadSvgRef.current?.getBoundingClientRect();
       const svgEl = roadSvgRef.current;
       if (!path || !pinRect || !svgRect || !svgEl) return;
 
+      const minAllowedLeft = labelHalfW + 20;
+      const maxAllowedLeft = (pinRect.width || window.innerWidth) - labelHalfW - 20;
       const len = path.getTotalLength();
       const svgH = svgEl.viewBox.baseVal.height;
       const svgW = svgEl.viewBox.baseVal.width;
-      const labelHalfWidth = 140;
-      const minAllowedLeft = labelHalfWidth + 20;
-      const maxAllowedLeft = (pinRect.width || window.innerWidth) - labelHalfWidth - 20;
 
       milestoneMeta.forEach((m) => {
         if (!m.el) return;
@@ -63,10 +62,10 @@ export default function JourneySection() {
         const yRatio = pt.y / svgH;
         const left = (svgRect.left - pinRect.left) + xRatio * svgRect.width;
         const top = (svgRect.top - pinRect.top) + yRatio * svgRect.height;
-        let finalLeft = m.side === 'left' ? left - 50 : left + 10;
+        let finalLeft = m.side === 'left' ? left - sideOff : left + rightOff;
         finalLeft = Math.max(minAllowedLeft, Math.min(maxAllowedLeft, finalLeft));
         m.el.style.left = finalLeft + 'px';
-        m.el.style.top = top - 50 + 'px';
+        m.el.style.top = top - iconH + 'px';
       });
     }
 
@@ -112,12 +111,16 @@ export default function JourneySection() {
       roadTl.to('.road-sun', { opacity: 0, scale: 0.7, duration: 0.9, ease: 'none' }, 0);
       roadTl.to('.road-moon', { opacity: 1, duration: 1, ease: 'none' }, 0.6);
 
-      milestoneMeta.forEach((m, i) => {
+      milestoneMeta.forEach((m) => {
         if (!m.el) return;
         const windows = m.el.querySelectorAll<SVGRectElement>('.house-window');
-        roadTl!.to(m.el, { scale: 1.15, duration: 0.5, ease: 'power2.out' }, i - 0.1);
-        if (windows.length) roadTl!.to(windows, { fill: '#c5ff7c', duration: 0.4 }, i - 0.05);
-        roadTl!.to(m.el, { scale: 1, duration: 0.5, ease: 'power2.in' }, i + 0.65);
+        const targetTime = 2 * m.pct;
+        const scaleUpStart = Math.max(0, targetTime - 0.25);
+        roadTl!.to(m.el, { scale: 1.15, duration: 0.25, ease: 'power2.out' }, scaleUpStart);
+        if (windows.length) {
+          roadTl!.to(windows, { fill: '#c5ff7c', duration: 0.2 }, scaleUpStart + 0.05);
+        }
+        roadTl!.to(m.el, { scale: 1, duration: 0.25, ease: 'power2.in' }, targetTime + 0.15);
       });
 
       const sp = path.getPointAtLength(0);
@@ -136,36 +139,106 @@ export default function JourneySection() {
       buildRoadTimeline();
       const handleResize = () => { positionMilestones(); buildRoadTimeline(); ScrollTrigger.refresh(); };
       window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
+      return () => {
+        window.removeEventListener('resize', handleResize);
+        if (roadTl) { roadTl.scrollTrigger?.kill(); roadTl.kill(); }
+      };
     });
 
     mm.add("(max-width: 768px)", () => {
-      const svgEl = roadSvgRef.current; const pathEl = roadPathRef.current;
-      if (!svgEl || !pathEl) return;
-      const allPaths = svgEl.querySelectorAll<SVGPathElement>('path');
-      const origD = pathEl.getAttribute('d') || '';
-      const vertD = 'M 720,-20 C 1060,80 380,180 720,280 C 1060,380 380,450 720,520';
-      allPaths.forEach(p => p.setAttribute('d', vertD));
-      svgEl.style.pointerEvents = 'none';
+      const svg = roadSvgRef.current;
+      const path = roadPathRef.current;
+      const car = carGroupRef.current;
+      const pin = roadPinRef.current;
+      if (!svg || !path || !car || !pin) return;
 
-      const st = ScrollTrigger.create({
-        trigger: roadSectionRef.current, start: 'top top', end: 'bottom bottom', scrub: 0.8, scroller: document.body,
-        onUpdate(self) {
-          const p = roadPathRef.current; const svg = roadSvgRef.current; const pin = roadPinRef.current; const car = carGroupRef.current;
-          if (!p || !svg || !pin || !car) return;
-          const len = p.getTotalLength(); const pr = pin.getBoundingClientRect(); const sr = svg.getBoundingClientRect();
-          const vb = svg.viewBox.baseVal; const sx = (sr.width || 1) / (vb.width || 1440); const sy = (sr.height || 1) / (vb.height || 500);
-          const pt = p.getPointAtLength(len * self.progress);
-          const x = sr.left - pr.left + pt.x * sx - 40; const y = sr.top - pr.top + pt.y * sy - 30;
-          const d = Math.max(0.5, len * 0.002);
-          const pa = p.getPointAtLength(Math.max(0, len * self.progress - d));
-          const pb = p.getPointAtLength(Math.min(len, len * self.progress + d));
-          const a = Math.atan2(pb.y - pa.y, pb.x - pa.x) * (180 / Math.PI);
-          gsap.set(car, { x, y, rotation: a, transformOrigin: '40px 25px', autoAlpha: 1 });
+      svg.setAttribute('viewBox', '0 0 400 800');
+      svg.style.height = '100%';
+
+      const origD = path.getAttribute('d') || '';
+      const vertD = 'M 200,-20 C 350,80 350,200 200,200 C 50,200 50,400 200,400 C 350,400 350,600 200,600 C 50,600 50,750 200,820';
+      path.setAttribute('d', vertD);
+      const glowPath = svg.querySelector<SVGPathElement>('path:last-child');
+      if (glowPath) glowPath.setAttribute('d', vertD);
+      svg.style.pointerEvents = 'none';
+
+      positionMilestones(18, 70, 80, 80);
+
+      milestoneMeta.forEach(m => {
+        if (m.el) m.el.onclick = (e) => (e.currentTarget as HTMLElement).classList.toggle('show-full');
+      });
+
+      const mtl = gsap.timeline({
+        scrollTrigger: {
+          trigger: roadSectionRef.current,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.4,
+          pin,
+          scroller: document.body,
         },
       });
 
-      return () => { st.kill(); allPaths.forEach(p => p.setAttribute('d', origD)); svgEl.style.pointerEvents = ''; };
+      const state = { p: 0 };
+      mtl.to(state, {
+        p: 1, duration: 4, ease: 'none',
+        onUpdate() {
+          const p = roadPathRef.current; const se = roadSvgRef.current; const pe = roadPinRef.current; const c = carGroupRef.current;
+          if (!p || !se || !pe || !c) return;
+          const len = p.getTotalLength(); const pr = pe.getBoundingClientRect(); const sr = se.getBoundingClientRect();
+          const vb = se.viewBox.baseVal; const sx = (sr.width || 1) / (vb.width || 400); const sy = (sr.height || 1) / (vb.height || 800);
+          const pt = p.getPointAtLength(len * state.p);
+          const x = sr.left - pr.left + pt.x * sx - 28; const y = sr.top - pr.top + pt.y * sy - 17;
+          const d = Math.max(0.5, len * 0.002);
+          const pa = p.getPointAtLength(Math.max(0, len * state.p - d));
+          const pb = p.getPointAtLength(Math.min(len, len * state.p + d));
+          const a = Math.atan2(pb.y - pa.y, pb.x - pa.x) * (180 / Math.PI);
+          gsap.set(c, { x, y, rotation: a, transformOrigin: '28px 17px', autoAlpha: 1 });
+        },
+      });
+
+      milestoneMeta.forEach((m) => {
+        if (!m.el) return;
+        const windows = m.el.querySelectorAll<SVGRectElement>('.house-window');
+        const targetTime = 4 * m.pct;
+        const scaleUpStart = Math.max(0, targetTime - 0.4);
+        mtl.to(m.el, { scale: 1.05, duration: 0.4, ease: 'power2.out' }, scaleUpStart);
+        if (windows.length) {
+          mtl.to(windows, { fill: '#c5ff7c', duration: 0.3 }, scaleUpStart + 0.1);
+        }
+        mtl.to(m.el, { scale: 1, duration: 0.4, ease: 'power2.in' }, targetTime + 0.2);
+      });
+
+      mtl.to('.road-sky', { opacity: 0.25, duration: 2, ease: 'none' }, 0);
+      mtl.to('.road-sky-night', { opacity: 1, duration: 2, ease: 'none' }, 0);
+      mtl.to('#roadPath', { attr: { stroke: 'rgba(197, 255, 124, 0.4)' }, duration: 2, ease: 'none' }, 0);
+      mtl.to('.star', { opacity: 1, scale: 1.3, duration: 2, ease: 'none' }, 0);
+      mtl.to('.road-sun', { opacity: 0, scale: 0.7, duration: 0.9, ease: 'none' }, 0);
+      mtl.to('.road-moon', { opacity: 1, duration: 1, ease: 'none' }, 0.6);
+
+      const sp = path.getPointAtLength(0);
+      const pr = pin.getBoundingClientRect(); const sr = svg.getBoundingClientRect();
+      const vbb = svg.viewBox.baseVal;
+      gsap.set(car, {
+        x: sr.left - pr.left + sp.x * ((sr.width || 1) / (vbb.width || 400)) - 28,
+        y: sr.top - pr.top + sp.y * ((sr.height || 1) / (vbb.height || 800)) - 17,
+        rotation: 0, transformOrigin: '28px 17px', autoAlpha: 1,
+      });
+
+      const handleResize = () => { positionMilestones(18, 70, 80, 80); ScrollTrigger.refresh(); };
+      window.addEventListener('resize', handleResize);
+
+      return () => {
+        milestoneMeta.forEach(m => { if (m.el) m.el.onclick = null; });
+        mtl.scrollTrigger?.kill();
+        mtl.kill();
+        svg.setAttribute('viewBox', '0 0 1440 500');
+        path.setAttribute('d', origD);
+        if (glowPath) glowPath.setAttribute('d', origD);
+        svg.style.pointerEvents = '';
+        svg.style.height = '';
+        window.removeEventListener('resize', handleResize);
+      };
     });
 
     const initRoad = () => ScrollTrigger.refresh();
@@ -232,7 +305,7 @@ export default function JourneySection() {
           <div className="house-label">
             <span className="yr">Nov 2024 – Feb 2025</span>
             <h3>Sainisoft Infotech</h3>
-            <p>Software Developer Intern · Integrated course workflows supporting 5K+ users. Speeded state loads by 40%.</p>
+            <p>Software Developer Intern · Integrated course workflows supporting 5K+ users. Sped state loads by 40%.</p>
           </div>
           <svg className="house-svg" viewBox="0 0 50 50">
             <circle cx="25" cy="25" r="10" fill="#141a28" stroke="#ffb454" strokeWidth="2" />
