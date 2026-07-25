@@ -4,11 +4,161 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import MotionPathPlugin from 'gsap/MotionPathPlugin';
+import Preloader from '@/components/Preloader';
+import SplitText from '@/components/SplitText';
+import LogoLoop from '@/components/LogoLoop';
+
+import {
+  SiJavascript,
+  SiTypescript,
+  SiPython,
+  SiSpringboot,
+  SiApachekafka,
+  SiNodedotjs,
+  SiReact,
+  SiNextdotjs,
+  SiPostgresql,
+  SiMysql,
+  SiMongodb,
+  SiRedis,
+  SiLinux,
+  SiDocker,
+  SiGit,
+  SiGithubactions,
+  SiPostman,
+  SiJira
+} from 'react-icons/si';
+import { FaJava, FaDatabase, FaAws, FaRocket, FaEye, FaArrowUpRightFromSquare } from 'react-icons/fa6';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
+const logoBadge = (icon: React.ReactNode, title: string, color: string) => (
+  <div
+    className="glass-logo-badge"
+    style={{ '--brand-color': color, color } as React.CSSProperties}
+  >
+    {icon}
+    <div className="glass-tooltip">{title}</div>
+  </div>
+);
+
+const skillRow1 = [
+  { node: logoBadge(<FaJava />, 'Java', '#e76f51') },
+  { node: logoBadge(<SiSpringboot />, 'Spring Boot', '#6db33f') },
+  { node: logoBadge(<SiApachekafka />, 'Apache Kafka', '#c5ff7c') },
+  { node: logoBadge(<SiNodedotjs />, 'Node.js', '#5fa04e') },
+  { node: logoBadge(<SiPython />, 'Python', '#3776ab') },
+  { node: logoBadge(<SiJavascript />, 'JavaScript', '#f7df1e') },
+  { node: logoBadge(<SiTypescript />, 'TypeScript', '#3178c6') }
+];
+
+const skillRow2 = [
+  { node: logoBadge(<SiReact />, 'React', '#61dafb') },
+  { node: logoBadge(<SiNextdotjs />, 'Next.js', '#ffffff') },
+  { node: logoBadge(<SiPostgresql />, 'PostgreSQL', '#4169e1') },
+  { node: logoBadge(<SiMysql />, 'MySQL', '#00758f') },
+  { node: logoBadge(<SiMongodb />, 'MongoDB', '#47a248') },
+  { node: logoBadge(<SiRedis />, 'Redis', '#dc382d') },
+  { node: logoBadge(<FaDatabase />, 'Oracle DB & SQL', '#ffb454') }
+];
+
+const skillRow3 = [
+  { node: logoBadge(<SiLinux />, 'Linux', '#fcc624') },
+  { node: logoBadge(<SiDocker />, 'Docker', '#2496ed') },
+  { node: logoBadge(<FaAws />, 'AWS', '#ff9900') },
+  { node: logoBadge(<SiGit />, 'Git', '#f05032') },
+  { node: logoBadge(<SiGithubactions />, 'CI/CD & GitHub Actions', '#2088ff') },
+  { node: logoBadge(<SiPostman />, 'Postman', '#ff6c37') },
+  { node: logoBadge(<SiJira />, 'Jira', '#0052cc') }
+];
+
+interface ProjectData {
+  id: string;
+  num: string;
+  title: string;
+  motto?: string;
+  repoUrl: string;
+  color: string;
+  tags: string[];
+  shortDesc: string;
+  fullDesc: string;
+  features: string[];
+  hustleDetails?: boolean;
+}
+
+const projectsData: ProjectData[] = [
+  {
+    id: 'revpay',
+    num: '01',
+    title: 'RevPay — Distributed Payment System',
+    repoUrl: 'https://github.com/NEERAJ-45/RevPay-Distributed-Payment-System',
+    color: 'rgba(197, 255, 124, 0.18)',
+    tags: ['Java 21', 'Spring Boot', 'Kafka', 'Redis', 'Postgres', 'AWS'],
+    shortDesc: 'Distributed event-driven payment processing platform built with Spring Boot microservices and Apache Kafka events.',
+    fullDesc: 'RevPay is a resilient financial transaction processing platform built to handle concurrent payment dispatches with high throughput. Utilizes Spring Boot microservices communicating via Apache Kafka event channels. Features transactional Outbox pattern, Redis idempotency keys, and optimistic database locking to eliminate duplicate charges and lost updates.',
+    features: [
+      'Event-driven microservices architecture communicating over Apache Kafka streams',
+      'Transactional Outbox Pattern guaranteeing atomic DB state and event dispatch',
+      'Redis Idempotency Keys preventing duplicate charge submissions',
+      'Optimistic locking & PostgreSQL/Oracle PL/SQL query tuning'
+    ]
+  },
+  {
+    id: 'docmanager',
+    num: '02',
+    title: 'Document Workflow Manager',
+    repoUrl: 'https://github.com/NEERAJ-45/document-workflow-manager',
+    color: 'rgba(255, 180, 84, 0.18)',
+    tags: ['Node.js', 'Express', 'MongoDB', 'Firebase', 'Docker', 'RBAC'],
+    shortDesc: 'Multi-stage document review and approval pipeline featuring granular Role-Based Access Control (RBAC).',
+    fullDesc: 'Secure enterprise document lifecycle manager enforcing multi-stage review pipelines (Draft → Review → Approved). Implements client-side AES-256 document payload encryption, RSA-2048 key exchange for secure reviewer handshakes, and Firebase real-time push notifications.',
+    features: [
+      'Granular 3-Tier Role Based Access Control (Draft, Reviewer, Approver)',
+      'AES-256 client-side payload encryption before persistence',
+      'RSA-2048 key exchange for secure reviewer validation handshakes',
+      'Firebase Cloud Messaging real-time push alerts'
+    ]
+  },
+  {
+    id: 'hustle',
+    num: '03',
+    title: 'Hustle.ai — AI Job Hunting Platform',
+    repoUrl: 'https://github.com/NEERAJ-45/Hustle.ai/',
+    color: 'rgba(255, 111, 145, 0.22)',
+    tags: ['Next.js', 'FastAPI', 'Kafka', 'Redis', 'MongoDB', 'LLMs', 'Nodemailer'],
+    shortDesc: 'Full-stack AI job hunting platform. One-click tailored ATS resume & cover letter generation, auto-apply via email & API.',
+    fullDesc: 'A full-stack AI-powered job hunting platform enabling users to discover jobs, generate tailored ATS resumes and cover letters with one click, and auto-apply via email or API — backed by an async ML pipeline using Kafka, Redis caching, and a FastAPI model layer.',
+    features: [
+      'One-click LLM pipeline analyzing JDs & generating tailored ATS resumes & cover letters',
+      'Automated PDF conversion & Nodemailer email dispatch with PDF attachments',
+      'Kafka async pipelines for background ML scoring & LLM document generation',
+      '5 Justified Redis Caching Layers (Search Cache, JD Hash, Status, Rate Limiting, JWT Blacklist)'
+    ],
+    hustleDetails: true
+  },
+  {
+    id: 'lms',
+    num: '04',
+    title: 'LMS — Learning Management System',
+    repoUrl: 'https://github.com/NEERAJ-45/lms',
+    color: 'rgba(99, 102, 241, 0.18)',
+    tags: ['Spring Boot', 'React', 'MySQL', 'REST APIs', 'Tailwind CSS'],
+    shortDesc: 'Full-stack course management platform supporting role-based dashboards for students, instructors, and administrators.',
+    fullDesc: 'Comprehensive educational platform supporting course enrollment, instructor uploads, student assignment submissions, and administrative grade tracking. Designed with optimized database queries and modular state management to ensure low latency and high availability.',
+    features: [
+      'Multi-Role User Dashboards (Student, Instructor, Admin)',
+      'Optimized MySQL relational schema & JPA repository pipelines',
+      'Interactive course player & progress tracker',
+      '40% reduction in initial state loading times via state management'
+    ]
+  }
+];
+
 export default function Home() {
+  const [loading, setLoading] = useState(true);
+  const playHeroAnimationRef = useRef<(() => void) | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const spacerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -28,12 +178,6 @@ export default function Home() {
   const m2Ref = useRef<HTMLDivElement>(null);
   const m3Ref = useRef<HTMLDivElement>(null);
   const m4Ref = useRef<HTMLDivElement>(null);
-  const m5Ref = useRef<HTMLDivElement>(null);
-
-  // Skills row refs
-  const row1Ref = useRef<HTMLDivElement>(null);
-  const row2Ref = useRef<HTMLDivElement>(null);
-  const row3Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // -------------------------------------------------------------
@@ -291,7 +435,7 @@ export default function Home() {
     // 5. HERO TEXT REVEAL & LETTER HOVER DISTORTION
     // -------------------------------------------------------------
     gsap.set('.hero h1 .line span', { yPercent: 110 });
-    gsap.timeline({ delay: 0.15 })
+    const heroTimeline = gsap.timeline({ paused: true })
       .to('.hero h1 .line span', {
         yPercent: 0,
         duration: 1.2,
@@ -307,6 +451,10 @@ export default function Home() {
         ease: 'power2.out',
       }, '-=0.5')
       .from('.hero-scrollcue', { y: 8, duration: 0.6 }, '-=0.4');
+
+    playHeroAnimationRef.current = () => {
+      heroTimeline.play();
+    };
 
     // Individual character hover micro-interactions
     const initHeroLetterHover = () => {
@@ -351,70 +499,8 @@ export default function Home() {
     initHeroLetterHover();
 
     // -------------------------------------------------------------
-    // 6. SKILLS MARQUEES WITH VELOCITY SENSITIVITY
+    // 6. SKILLS SECTION (POWERED BY REAGT BITS LOGOLOOP)
     // -------------------------------------------------------------
-    const skillSets = [
-      ['Java', 'Spring Boot', 'Kafka', 'REST APIs', 'Node.js', 'Python', 'JavaScript'],
-      ['React', 'Next.js', 'PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'Oracle Database', 'PL/SQL'],
-      ['Linux', 'Docker', 'AWS (EC2/S3)', 'CloudWatch', 'X-Ray', 'CI/CD', 'Git', 'Postman', 'Jira'],
-    ];
-    const rowColors = ['#c5ff7c', '#ffb454', '#ff6f91'];
-
-    [row1Ref, row2Ref, row3Ref].forEach((ref, i) => {
-      const row = ref.current;
-      if (!row) return;
-      const color = rowColors[i];
-      const items = skillSets[i];
-      const html = items
-        .map(
-          (s) =>
-            `<div class="badge" style="--glow-color:${color}"><span class="dot"></span>${s}</div>`
-        )
-        .join('');
-      // Duplicate items to ensure infinite looping
-      row.innerHTML = html + html + html;
-    });
-
-    const marqueeTweens: { tween: gsap.core.Tween; dir: number }[] = [];
-    document.querySelectorAll('.marquee-row').forEach((row) => {
-      const dir = parseFloat((row as HTMLElement).dataset.dir || '1');
-      const tween = gsap.to(row, {
-        xPercent: dir > 0 ? -33.33 : 33.33,
-        ease: 'none',
-        duration: 32,
-        repeat: -1,
-      });
-      // Start at centered offset
-      gsap.set(row, { xPercent: -33.33 });
-      marqueeTweens.push({ tween, dir });
-    });
-
-    ScrollTrigger.create({
-      trigger: '#skills',
-      start: 'top bottom',
-      end: 'bottom top',
-      onUpdate(self) {
-        const vel = self.getVelocity() / 180;
-        marqueeTweens.forEach(({ tween, dir }) => {
-          // Accelerate marquee row speeds on scroll velocity
-          const targetScale = gsap.utils.clamp(-5.5, 5.5, dir + vel * dir);
-          gsap.to(tween, {
-            timeScale: targetScale,
-            duration: 0.35,
-            overwrite: true,
-          });
-        });
-
-        // Dynamic badge shadow glow responsive to scroll velocity
-        const glowStrength = Math.min(1.2, Math.abs(vel) / 2.5);
-        document.querySelectorAll('.badge').forEach((b) => {
-          const el = b as HTMLElement;
-          const badgeColor = el.style.getPropertyValue('--glow-color') || '#c5ff7c';
-          el.style.boxShadow = `0 0 ${15 + glowStrength * 45}px -3px ${badgeColor}`;
-          el.style.borderColor = glowStrength > 0.4 ? badgeColor : 'rgba(255, 255, 255, 0.05)';
-        });
-      },
-    });
 
     // -------------------------------------------------------------
     // 7. JOURNEY - COSMIC SPACE SHIP ROUTE TRIGGER
@@ -436,11 +522,10 @@ export default function Home() {
     }
 
     const milestoneMeta = [
-      { id: '#m1', el: m1Ref.current, pct: 0.06, side: 'left' as const },
-      { id: '#m2', el: m2Ref.current, pct: 0.28, side: 'right' as const },
-      { id: '#m3', el: m3Ref.current, pct: 0.50, side: 'left' as const },
-      { id: '#m4', el: m4Ref.current, pct: 0.72, side: 'right' as const },
-      { id: '#m5', el: m5Ref.current, pct: 0.94, side: 'left' as const },
+      { id: '#m1', el: m1Ref.current, pct: 0.10, side: 'right' as const },
+      { id: '#m2', el: m2Ref.current, pct: 0.35, side: 'right' as const },
+      { id: '#m3', el: m3Ref.current, pct: 0.60, side: 'left' as const },
+      { id: '#m4', el: m4Ref.current, pct: 0.85, side: 'right' as const },
     ];
 
     function positionMilestones() {
@@ -454,6 +539,10 @@ export default function Home() {
       const svgH = svgEl.viewBox.baseVal.height;
       const svgW = svgEl.viewBox.baseVal.width;
 
+      const labelHalfWidth = 140; // 250px card width / 2 + 15px safety padding
+      const minAllowedLeft = labelHalfWidth + 20;
+      const maxAllowedLeft = (pinRect.width || window.innerWidth) - labelHalfWidth - 20;
+
       milestoneMeta.forEach((m) => {
         if (!m.el) return;
         const pt = path.getPointAtLength(len * m.pct);
@@ -464,13 +553,15 @@ export default function Home() {
         const top = (svgRect.top - pinRect.top) + yRatio * svgRect.height;
         
         let finalLeft: number;
-        const hw = 50; // badge width half-size context
         if (m.side === 'left') {
-          finalLeft = left - hw - 24;
-          if (finalLeft < 10) finalLeft = left + 24;
+          finalLeft = left - 50;
         } else {
-          finalLeft = left + 24;
+          finalLeft = left + 10;
         }
+
+        // Clamp finalLeft so cards are NEVER cut off by viewport boundaries
+        finalLeft = Math.max(minAllowedLeft, Math.min(maxAllowedLeft, finalLeft));
+        
         m.el.style.left = finalLeft + 'px';
         m.el.style.top = top - 50 + 'px';
       });
@@ -604,14 +695,49 @@ export default function Home() {
     });
 
     mm.add("(max-width: 768px)", () => {
-      // Mobile: remove absolute positions so CSS layout flows naturally
-      milestoneMeta.forEach((m) => {
-        if (m.el) {
-          m.el.style.left = '';
-          m.el.style.top = '';
+      const svgEl = roadSvgRef.current;
+      const pathEl = roadPathRef.current;
+      if (!svgEl || !pathEl) return;
+
+      const allPaths = svgEl.querySelectorAll<SVGPathElement>('path');
+      const origD = pathEl.getAttribute('d') || '';
+      const vertD = 'M 720,-20 C 1060,80 380,180 720,280 C 1060,380 380,450 720,520';
+      allPaths.forEach(p => p.setAttribute('d', vertD));
+      svgEl.style.pointerEvents = 'none';
+
+      const st = ScrollTrigger.create({
+        trigger: roadSectionRef.current,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.8,
+        onUpdate(self) {
+          const p = roadPathRef.current;
+          const svg = roadSvgRef.current;
+          const pin = roadPinRef.current;
+          const car = carGroupRef.current;
+          if (!p || !svg || !pin || !car) return;
+          const len = p.getTotalLength();
+          const pr = pin.getBoundingClientRect();
+          const sr = svg.getBoundingClientRect();
+          const vb = svg.viewBox.baseVal;
+          const sx = (sr.width || 1) / (vb.width || 1440);
+          const sy = (sr.height || 1) / (vb.height || 500);
+          const pt = p.getPointAtLength(len * self.progress);
+          const x = sr.left - pr.left + pt.x * sx - 40;
+          const y = sr.top - pr.top + pt.y * sy - 30;
+          const d = Math.max(0.5, len * 0.002);
+          const pa = p.getPointAtLength(Math.max(0, len * self.progress - d));
+          const pb = p.getPointAtLength(Math.min(len, len * self.progress + d));
+          const a = Math.atan2(pb.y - pa.y, pb.x - pa.x) * (180 / Math.PI);
+          gsap.set(car, { x, y, rotation: a, transformOrigin: '40px 25px', autoAlpha: 1 });
         }
       });
-      ScrollTrigger.refresh();
+
+      return () => {
+        st.kill();
+        allPaths.forEach(p => p.setAttribute('d', origD));
+        svgEl.style.pointerEvents = '';
+      };
     });
 
     const initRoad = () => {
@@ -709,8 +835,35 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!loading) {
+      ScrollTrigger.refresh();
+      window.dispatchEvent(new Event('resize'));
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (!selectedProject) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedProject(null);
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [selectedProject]);
+
   return (
     <>
+      {loading && (
+        <Preloader
+          onComplete={() => {
+            setLoading(false);
+            if (playHeroAnimationRef.current) {
+              playHeroAnimationRef.current();
+            }
+          }}
+        />
+      )}
+
       {/* Custom Pointer Elements */}
       <div ref={cursorDotRef} className="custom-cursor" />
       <div ref={cursorFollowerRef} className="custom-cursor-follower" />
@@ -764,7 +917,19 @@ export default function Home() {
           <div className="hero-eyebrow">Distributed Systems &amp; Payments</div>
           <h1>
             <div className="line">
-              <span>Hi, I&apos;m NEERAJ —</span>
+              <SplitText
+                text="Hi, I'm NEERAJ —"
+                className="hero-split-name"
+                delay={45}
+                duration={0.75}
+                ease="power3.out"
+                splitType="chars"
+                from={{ opacity: 0, y: 40 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.1}
+                textAlign="left"
+                tag="span"
+              />
             </div>
             <div className="line">
               <span>
@@ -806,15 +971,41 @@ export default function Home() {
               creative web environments.
             </p>
           </div>
-          <div className="skills-rows">
-            <div className="marquee-viewport">
-              <div className="marquee-row" data-dir="1" ref={row1Ref} />
-            </div>
-            <div className="marquee-viewport">
-              <div className="marquee-row" data-dir="-1" ref={row2Ref} />
-            </div>
-            <div className="marquee-viewport">
-              <div className="marquee-row" data-dir="1" ref={row3Ref} />
+          <div className="skills-container">
+            <div className="skills-rows">
+              <LogoLoop
+                logos={skillRow1}
+                speed={55}
+                direction="left"
+                logoHeight={64}
+                gap={36}
+                hoverSpeed={0}
+                scaleOnHover
+                fadeOut
+                fadeOutColor="#030408"
+              />
+              <LogoLoop
+                logos={skillRow2}
+                speed={55}
+                direction="right"
+                logoHeight={64}
+                gap={36}
+                hoverSpeed={0}
+                scaleOnHover
+                fadeOut
+                fadeOutColor="#030408"
+              />
+              <LogoLoop
+                logos={skillRow3}
+                speed={55}
+                direction="left"
+                logoHeight={64}
+                gap={36}
+                hoverSpeed={0}
+                scaleOnHover
+                fadeOut
+                fadeOutColor="#030408"
+              />
             </div>
           </div>
         </section>
@@ -981,18 +1172,6 @@ export default function Home() {
                 <circle cx="25" cy="25" r="5" fill="#ff6f91" className="house-window" />
               </svg>
             </div>
-
-            <div className="road-house" id="m5" ref={m5Ref}>
-              <div className="house-label">
-                <span className="yr">Graduating 2026</span>
-                <h3>DKTE, Ichalkaranji</h3>
-                <p>B.Tech in Computer Science · Solid academic training in distributed databases, software engineering patterns, and systems (CGPA: 7.86).</p>
-              </div>
-              <svg className="house-svg" viewBox="0 0 50 50">
-                <polygon points="25,2 48,18 39,45 11,45 2,18" fill="#141a28" stroke="#6366f1" strokeWidth="2" />
-                <circle cx="25" cy="25" r="7" fill="#c5ff7c" className="house-window" />
-              </svg>
-            </div>
           </div>
         </section>
 
@@ -1006,127 +1185,52 @@ export default function Home() {
             </p>
           </div>
           <div className="project-grid">
-            
-            <div className="project-card" style={{ '--pc': 'rgba(197, 255, 124, 0.18)' } as React.CSSProperties}>
-              <span className="num">01</span>
-              <div className="glow-orb" />
-              <div className="project-tags">
-                <span>Java 21</span>
-                <span>Spring Boot</span>
-                <span>Kafka</span>
-                <span>Redis</span>
-                <span>Postgres</span>
-                <span>AWS</span>
-              </div>
-              <h3>RevPay Payment Platform</h3>
-              <p>
-                Distributed event-driven payments using Spring Boot microservices and Kafka events. 
-                Optimistic locks, Redis idempotency keys, and the Outbox Pattern ensure zero lost updates or duplicate charges.
-              </p>
-              <span className="project-link">
-                View Repository{' '}
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                >
-                  <path d="M7 17L17 7M7 7h10v10" />
-                </svg>
-              </span>
-            </div>
+            {projectsData.map((project) => (
+              <div
+                key={project.id}
+                className="project-card"
+                style={{ '--pc': project.color, cursor: 'pointer' } as React.CSSProperties}
+                onClick={() => setSelectedProject(project)}
+              >
+                <span className="num">{project.num}</span>
+                <div className="glow-orb" />
+                <div className="project-tags">
+                  {project.tags.map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
+                </div>
+                {project.motto && (
+                  <span className="hustle-motto-tag" style={{ alignSelf: 'flex-start', margin: '4px 0 12px 0' }}>
+                    {project.motto}
+                  </span>
+                )}
+                <h3>{project.title}</h3>
+                <p>{project.shortDesc}</p>
 
-            <div className="project-card" style={{ '--pc': 'rgba(255, 180, 84, 0.18)' } as React.CSSProperties}>
-              <span className="num">02</span>
-              <div className="glow-orb" />
-              <div className="project-tags">
-                <span>Node.js</span>
-                <span>Express</span>
-                <span>MongoDB</span>
-                <span>Firebase</span>
-                <span>Docker</span>
+                <div className="project-card-actions">
+                  <a
+                    href={project.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="project-btn"
+                  >
+                    View{' '}
+                    <FaArrowUpRightFromSquare size={14} />
+                  </a>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedProject(project);
+                    }}
+                    className="project-btn project-btn-secondary"
+                  >
+                    <FaEye style={{ marginRight: 6 }} /> Show
+                  </button>
+                </div>
               </div>
-              <h3>Document Workflow Manager</h3>
-              <p>
-                A 3-stage document approval pipeline with RBAC. Features AES-256 client-side encryption, 
-                RSA-2048 key exchange, and Firebase push alerts for reviewers.
-              </p>
-              <span className="project-link">
-                View Repository{' '}
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                >
-                  <path d="M7 17L17 7M7 7h10v10" />
-                </svg>
-              </span>
-            </div>
-
-            <div className="project-card" style={{ '--pc': 'rgba(255, 111, 145, 0.18)' } as React.CSSProperties}>
-              <span className="num">03</span>
-              <div className="glow-orb" />
-              <div className="project-tags">
-                <span>React</span>
-                <span>Next.js</span>
-                <span>REST APIs</span>
-                <span>Docker</span>
-                <span>AWS</span>
-              </div>
-              <h3>Freelance Implementations</h3>
-              <p>
-                Bespoke full-stack systems delivered for clients, streamlining dashboard metrics, 
-                third-party validations, and automating administrative workflows.
-              </p>
-              <span className="project-link">
-                View Works{' '}
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                >
-                  <path d="M7 17L17 7M7 7h10v10" />
-                </svg>
-              </span>
-            </div>
-
-            <div className="project-card" style={{ '--pc': 'rgba(99, 102, 241, 0.18)' } as React.CSSProperties}>
-              <span className="num">04</span>
-              <div className="glow-orb" />
-              <div className="project-tags">
-                <span>Spring Boot</span>
-                <span>React</span>
-                <span>MySQL</span>
-                <span>state-mgmt</span>
-              </div>
-              <h3>LMS Course Manager</h3>
-              <p>
-                Admin dashboards supporting 5K+ users with role-based access. Includes optimized frontend state 
-                structures reducing load times by 40%.
-              </p>
-              <span className="project-link">
-                View Case Study{' '}
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                >
-                  <path d="M7 17L17 7M7 7h10v10" />
-                </svg>
-              </span>
-            </div>
-
+            ))}
           </div>
         </section>
 
@@ -1141,18 +1245,143 @@ export default function Home() {
           </a>
           <div className="socials">
             <a href="https://github.com/NEERAJ-45" target="_blank" rel="noreferrer">GitHub</a>
-            <a href="https://linkedin.com/in/neeraj-surnis" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="https://www.linkedin.com/in/neeraj-surnis-8739752b1/" target="_blank" rel="noreferrer">LinkedIn</a>
             <a href="tel:+919322696345">Call (+91 93226 96345)</a>
             <a href="mailto:neerajsurnis@gmail.com">Email</a>
           </div>
           <footer>
             <span>© 2026 Neeraj Surnis</span>
-            <span>
-              Java · Spring Boot · Kafka · React · Next.js · GSAP
-            </span>
+             
           </footer>
         </section>
       </div>
+      {selectedProject && (
+        <div className="fullscreen-project-modal">
+          <div className="fullscreen-modal-header">
+            <div>
+              <span className="eyebrow" style={{ color: 'var(--lime)', marginBottom: '6px' }}>
+                Project {selectedProject.num} · System Architecture &amp; Showcase
+              </span>
+              <h2 style={{ fontSize: '2.4rem', margin: 0, color: 'var(--text)' }}>
+                {selectedProject.title}
+              </h2>
+            </div>
+            <button
+              type="button"
+              className="fullscreen-modal-close"
+              onClick={() => setSelectedProject(null)}
+              aria-label="Close modal"
+            >
+              ✕
+            </button>
+          </div>
+
+          {selectedProject.motto && (
+            <span className="hustle-motto-tag" style={{ fontSize: '0.9rem', padding: '8px 18px', marginBottom: '24px' }}>
+              {selectedProject.motto}
+            </span>
+          )}
+
+          <div className="project-tags" style={{ marginBottom: '28px' }}>
+            {selectedProject.tags.map((t) => (
+              <span key={t} style={{ fontSize: '0.85rem', padding: '8px 18px', borderColor: 'rgba(255, 255, 255, 0.2)' }}>
+                {t}
+              </span>
+            ))}
+          </div>
+
+          <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '20px', padding: '32px', marginBottom: '28px' }}>
+            <h3 style={{ fontSize: '1.25rem', marginBottom: '12px', color: 'var(--lime)' }}>
+              System &amp; Overview
+            </h3>
+            <p style={{ color: 'var(--text-dim)', fontSize: '1.05rem', lineHeight: '1.7', margin: 0 }}>
+              {selectedProject.fullDesc}
+            </p>
+          </div>
+
+          <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '20px', padding: '32px', marginBottom: '28px' }}>
+            <h3 style={{ fontSize: '1.25rem', marginBottom: '16px', color: '#ffb454' }}>
+              Key Engineering Highlights
+            </h3>
+            <ul style={{ paddingLeft: '20px', margin: 0, color: 'var(--text)', fontSize: '1rem', lineHeight: '1.8' }}>
+              {selectedProject.features.map((feat, idx) => (
+                <li key={idx} style={{ marginBottom: '8px' }}>{feat}</li>
+              ))}
+            </ul>
+          </div>
+
+          {selectedProject.hustleDetails && (
+            <>
+              <div className="hustle-pitch-box" style={{ fontSize: '1.05rem', padding: '24px', marginBottom: '28px' }}>
+                &ldquo;I built a job hunting platform with a built-in job portal, one-click AI-generated ATS-optimized resumes and cover letters, and auto-apply via email and API — backed by an async ML pipeline using Kafka, Redis caching, and a FastAPI model layer.&rdquo;
+              </div>
+
+              <div className="hustle-grid-two">
+                <div className="hustle-box-card">
+                  <h4 style={{ color: 'var(--lime)' }}>Phase 1 — MVP Edition</h4>
+                  <p style={{ color: 'var(--text-dim)', fontSize: '0.88rem', marginBottom: '12px' }}>
+                    Proves zero to applied in under 2 minutes:
+                  </p>
+                  <ul>
+                    <li>Auth (JWT) + User profile with resume upload</li>
+                    <li>Job listings (seeded with apply emails)</li>
+                    <li>LLM Pipeline (JD analysis + resume tailoring + cover letter)</li>
+                    <li>PDF Generation for both tailored documents</li>
+                    <li>Email Apply (Nodemailer attachment dispatch)</li>
+                    <li>Application Tracker (auto-set status to Applied)</li>
+                  </ul>
+                </div>
+
+                <div className="hustle-box-card">
+                  <h4 style={{ color: '#ffb454' }}><FaRocket style={{ marginRight: 6 }} /> Phase 2 — Scaled Edition</h4>
+                  <p style={{ color: 'var(--text-dim)', fontSize: '0.88rem', marginBottom: '12px' }}>
+                    Production scale with async event queues &amp; caching:
+                  </p>
+                  <ul>
+                    <li>OAuth (Google / GitHub authentication)</li>
+                    <li>Redis multi-stage caching &amp; rate limiting</li>
+                    <li>Kafka async pipelines (resume &amp; LLM generation)</li>
+                    <li>FastAPI ML job matching + ATS scoring layer</li>
+                    <li>API Apply (custom payload builder)</li>
+                    <li>External job support (manual JD paste for Naukri/LinkedIn)</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="hustle-box-card" style={{ marginBottom: '24px' }}>
+                  <h4 style={{ color: '#ff6f91' }}>Redis — 5 Justified Use Cases</h4>
+                <ul style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '10px', paddingLeft: '16px' }}>
+                  <li><strong>Job Search Cache:</strong> 24hr TTL cache for frequent queries</li>
+                  <li><strong>JD Analysis Cache:</strong> Hash JD → cache extracted keywords</li>
+                  <li><strong>Generation Job Status:</strong> Async Kafka status store for UI polling</li>
+                  <li><strong>Rate Limiting:</strong> Hourly counter per user for LLM bill safety</li>
+                  <li><strong>JWT Blacklist:</strong> Invalidate logged out tokens instantly</li>
+                </ul>
+              </div>
+
+              <div className="hustle-box-card" style={{ marginBottom: '32px' }}>
+                  <h4 style={{ color: '#6366f1' }}>Kafka — 2 Justified Async Pipelines</h4>
+                <ul>
+                  <li><strong>Resume Processing Pipeline:</strong> ML scoring (5-10s) runs async via FastAPI without blocking API endpoints.</li>
+                  <li><strong>LLM Document Generation:</strong> 10-30s LLM calls run async, publish status to Redis, and notify frontend.</li>
+                </ul>
+              </div>
+            </>
+          )}
+
+          <div style={{ marginTop: 'auto', paddingTop: '32px', display: 'flex', gap: '20px', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+            <a
+              href={selectedProject.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-btn"
+              style={{ fontSize: '1rem', padding: '14px 28px' }}
+            >
+              View Repository on GitHub ↗
+            </a>
+          </div>
+        </div>
+      )}
     </>
   );
 }
