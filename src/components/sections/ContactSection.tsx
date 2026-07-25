@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -51,7 +52,9 @@ function ContactModal({ onClose }: { onClose: () => void }) {
     }
   };
 
-  return (
+  // Portal escape: render directly on document.body so that
+  // position:fixed works correctly despite the CSS-transform scroll container
+  return createPortal(
     <motion.div
       className="contact-modal-backdrop"
       initial={{ opacity: 0 }}
@@ -99,7 +102,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
             </div>
             <div className="form-group">
               <label htmlFor="modal-subject">Subject <span className="form-optional">(optional)</span></label>
-              <input id="modal-subject" type="text" name="subject" placeholder="What&apos;s this about?"
+              <input id="modal-subject" type="text" name="subject" placeholder="What's this about?"
                 value={fields.subject} onChange={handleChange} disabled={formState === 'sending'} />
             </div>
             <div className="form-group">
@@ -133,7 +136,8 @@ function ContactModal({ onClose }: { onClose: () => void }) {
           </motion.div>
         )}
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body
   );
 }
 
