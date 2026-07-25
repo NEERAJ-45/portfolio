@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* ============================================================
+   1. DESIGN TOKENS
+   ============================================================ */
 :root {
   --bg: #030408;
   --bg-rgb: 3, 4, 8;
@@ -7,20 +10,22 @@
   --panel: rgba(14, 18, 28, 0.45);
   --panel-border: rgba(255, 255, 255, 0.05);
   --panel-border-glow: rgba(197, 255, 124, 0.15);
-  
+
   --text: #f3f4f6;
   --text-dim: #9ca3af;
-  
-  /* Harmonious color palette */
-  --lime: #c5ff7c;       /* Wembi-inspired vibrant key color */
+
+  --lime: #c5ff7c;
   --lime-glow: rgba(197, 255, 124, 0.4);
-  --amber: #ffb454;      /* Cyber amber */
+  --amber: #ffb454;
   --amber-glow: rgba(255, 180, 84, 0.3);
-  --rose: #ff6f91;       /* Accent coral rose */
-  --indigo: #6366f1;     /* Ambient indigo */
+  --rose: #ff6f91;
+  --indigo: #6366f1;
   --slate: #475569;
 }
 
+/* ============================================================
+   2. RESET & BASE
+   ============================================================ */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -31,7 +36,7 @@
 
 html {
   background: var(--bg);
-  scroll-behavior: auto; /* Managed by GSAP proxy */
+  scroll-behavior: auto;
   overflow-x: hidden;
 }
 
@@ -40,7 +45,7 @@ body {
   color: var(--text);
   font-family: var(--font-inter), sans-serif;
   overflow-x: hidden;
-  cursor: none; /* Custom premium cursor */
+  cursor: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -50,7 +55,6 @@ body {
   color: #030408;
 }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -60,7 +64,6 @@ body {
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  transition: background 0.3s;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--lime);
@@ -84,7 +87,9 @@ a {
   text-transform: uppercase;
 }
 
-/* ---------- SMOOTH SCROLLING WRAPPER ---------- */
+/* ============================================================
+   3. SMOOTH SCROLL WRAPPER
+   ============================================================ */
 #smooth-spacer {
   width: 1px;
 }
@@ -98,7 +103,9 @@ a {
   backface-visibility: hidden;
 }
 
-/* ---------- CUSTOM PREMIUM CURSOR ---------- */
+/* ============================================================
+   4. CUSTOM CURSOR
+   ============================================================ */
 .custom-cursor {
   position: fixed;
   top: 0;
@@ -111,7 +118,6 @@ a {
   z-index: 9999;
   transform: translate(-50%, -50%);
   mix-blend-mode: difference;
-  transition: width 0.2s, height 0.2s, background-color 0.2s;
 }
 
 .custom-cursor-follower {
@@ -129,7 +135,6 @@ a {
   will-change: transform;
 }
 
-/* Cursor Hover States */
 .cursor-hovering .custom-cursor {
   width: 24px;
   height: 24px;
@@ -144,7 +149,9 @@ a {
   background: rgba(197, 255, 124, 0.05);
 }
 
-/* ---------- INTERACTIVE BACKGROUND CANVAS ---------- */
+/* ============================================================
+   5. BACKGROUND — STARFIELD CANVAS + CYBER GRID
+   ============================================================ */
 #canvas-starfield {
   position: fixed;
   top: 0;
@@ -158,7 +165,7 @@ a {
 .cyber-grid-overlay {
   position: fixed;
   inset: 0;
-  background-image: 
+  background-image:
     linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
   background-size: 80px 80px;
@@ -168,7 +175,9 @@ a {
   z-index: 1;
 }
 
-/* ---------- NAVIGATION BAR ---------- */
+/* ============================================================
+   6. NAVIGATION
+   ============================================================ */
 nav {
   position: fixed;
   top: 0;
@@ -203,7 +212,6 @@ nav {
   box-shadow: 0 0 10px var(--lime-glow);
 }
 
-/* Menu Toggle Button */
 .menu-toggle {
   background: none;
   border: none;
@@ -219,18 +227,18 @@ nav {
   width: 28px;
   height: 2px;
   background-color: var(--text);
-  /* transition removed — GSAP handles the morph */
 }
 
 .menu-toggle:hover .menu-line:first-child {
   width: 20px;
 }
-
 .menu-toggle:hover .menu-line:last-child {
   width: 24px;
 }
 
-/* Fullscreen Menu Overlay — opacity/visibility controlled by Framer Motion */
+/* ============================================================
+   7. FULLSCREEN MENU
+   ============================================================ */
 .fullscreen-menu {
   position: fixed;
   inset: 0;
@@ -255,14 +263,12 @@ nav {
   font-size: clamp(2.5rem, 6vw, 4.5rem);
   font-weight: 800;
   color: var(--text-dim);
-  transition: color 0.3s, transform 0.3s;
   overflow: hidden;
   display: block;
 }
 
 .menu-item span {
   display: inline-block;
-  /* transform/transition removed — Framer Motion variants handle reveal */
 }
 
 .menu-item:hover {
@@ -274,7 +280,6 @@ nav {
   margin-top: 40px;
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.5s 0.3s, transform 0.5s 0.3s;
   font-family: var(--font-jetbrains-mono);
   color: var(--text-dim);
   font-size: 0.8rem;
@@ -286,7 +291,9 @@ nav {
   transform: translateY(0);
 }
 
-/* ---------- HERO SECTION ---------- */
+/* ============================================================
+   8. HERO
+   ============================================================ */
 .hero {
   position: relative;
   min-height: 100vh;
@@ -389,7 +396,6 @@ nav {
   gap: 10px;
   font-weight: 500;
   cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s;
 }
 
 .btn-primary {
@@ -398,22 +404,11 @@ nav {
   box-shadow: 0 10px 20px -8px var(--lime-glow);
 }
 
-.btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 30px -5px var(--lime-glow);
-}
-
 .btn-ghost {
   border: 1px solid var(--panel-border);
   color: var(--text);
   background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(10px);
-}
-
-.btn-ghost:hover {
-  border-color: var(--lime);
-  color: var(--lime);
-  transform: translateY(-3px);
 }
 
 .hero-scrollcue {
@@ -438,7 +433,6 @@ nav {
   overflow: hidden;
 }
 
-/* GSAP animates this child element — replaces @keyframes scrollDrip */
 .scroll-drip {
   position: absolute;
   top: 0;
@@ -449,7 +443,9 @@ nav {
   will-change: transform;
 }
 
-/* ---------- SECTION COMMON ---------- */
+/* ============================================================
+   9. SECTION COMMON
+   ============================================================ */
 section {
   position: relative;
   z-index: 2;
@@ -485,7 +481,9 @@ section {
   line-height: 1.65;
 }
 
-/* ---------- SKILLS SECTION ---------- */
+/* ============================================================
+   10. SKILLS
+   ============================================================ */
 .skills {
   padding: 150px 0;
 }
@@ -542,14 +540,6 @@ section {
   display: flex;
   align-items: center;
   gap: 12px;
-  box-shadow: 0 0 0px 0px var(--glow-color, rgba(197, 255, 124, 0));
-  transition: box-shadow 0.3s, border-color 0.3s, transform 0.3s;
-}
-
-.badge:hover {
-  border-color: var(--glow-color, var(--lime));
-  box-shadow: 0 0 35px -5px var(--glow-color, var(--lime));
-  transform: translateY(-4px) scale(1.02);
 }
 
 .badge .dot {
@@ -561,7 +551,9 @@ section {
   box-shadow: 0 0 8px var(--glow-color, var(--lime));
 }
 
-/* ---------- COSMIC EXPERIENCE / ROAD ---------- */
+/* ============================================================
+   11. JOURNEY / ROAD
+   ============================================================ */
 .road-section {
   position: relative;
   height: 600vh;
@@ -585,7 +577,6 @@ section {
   inset: 0;
   opacity: 0;
   background: linear-gradient(180deg, #010103 0%, #03050b 24%, #070a17 46%, #0d0f24 68%, #04050a 90%, #010102 100%);
-  transition: opacity 0.5s ease;
 }
 
 .road-stars {
@@ -632,7 +623,6 @@ section {
   overflow: visible;
 }
 
-/* Cosmic landscape hills, stylized as abstract stellar waves */
 .hill {
   position: absolute;
   bottom: 0;
@@ -645,11 +635,9 @@ section {
 .hill-mid path { fill: #0a0812; }
 .hill-front path { fill: #040307; }
 
-/* Timeline voyager & points */
 .road-house {
   position: absolute;
   z-index: 10;
-  opacity: 1;
   width: 50px;
   height: 50px;
 }
@@ -754,7 +742,9 @@ section {
   box-shadow: 0 0 8px var(--lime-glow);
 }
 
-/* ---------- PROJECTS SECTION ---------- */
+/* ============================================================
+   12. PROJECTS
+   ============================================================ */
 .projects {
   padding: 150px 0;
 }
@@ -784,16 +774,9 @@ section {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.4s;
   box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
   transform: translateZ(0);
   backface-visibility: hidden;
-}
-
-.project-card:hover {
-  transform: translateY(-8px);
-  border-color: rgba(197, 255, 124, 0.3);
-  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.5), 0 0 30px -5px rgba(197, 255, 124, 0.1);
 }
 
 .project-card .num {
@@ -813,12 +796,7 @@ section {
   top: -100px;
   right: -100px;
   background: radial-gradient(circle, var(--pc, rgba(197, 255, 124, 0.2)), transparent 70%);
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
-}
-
-.project-card:hover .glow-orb {
-  transform: scale(1.3);
 }
 
 .project-tags {
@@ -852,32 +830,9 @@ section {
   margin-bottom: 24px;
 }
 
-.project-link {
-  margin-top: 24px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-jetbrains-mono);
-  font-size: 0.85rem;
-  color: var(--lime);
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.project-link svg {
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.project-card:hover .project-link {
-  color: #fff;
-}
-
-.project-card:hover .project-link svg {
-  transform: translate(5px, -5px);
-  stroke: var(--lime);
-}
-
-/* ---------- PROJECT CARD ACTIONS & BUTTONS ---------- */
+/* ============================================================
+   13. PROJECT CARD ACTIONS
+   ============================================================ */
 .project-card-actions {
   display: flex;
   gap: 12px;
@@ -895,17 +850,9 @@ section {
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   border: 1px solid var(--lime);
   background: var(--lime);
   color: #030408;
-}
-
-.project-btn:hover {
-  background: #d2ff96;
-  border-color: #d2ff96;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px -4px var(--lime-glow);
 }
 
 .project-btn-secondary {
@@ -914,15 +861,6 @@ section {
   color: var(--text);
 }
 
-.project-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--text);
-  color: var(--text);
-  transform: translateY(-2px);
-  box-shadow: none;
-}
-
-/* ---------- HUSTLE CUSTOM BADGE ---------- */
 .hustle-motto-tag {
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: 0.72rem;
@@ -936,7 +874,9 @@ section {
   align-self: flex-start;
 }
 
-/* ---------- CASE STUDY DETAILS MODAL ---------- */
+/* ============================================================
+   14. PROJECT MODAL
+   ============================================================ */
 .fullscreen-project-modal {
   position: fixed;
   inset: 0;
@@ -952,14 +892,8 @@ section {
 }
 
 @keyframes modalFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.985);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.985); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .fullscreen-modal-header {
@@ -983,13 +917,6 @@ section {
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.fullscreen-modal-close:hover {
-  background: rgba(255, 255, 255, 0.09);
-  color: var(--text);
-  transform: rotate(90deg);
 }
 
 .hustle-pitch-box {
@@ -1037,7 +964,9 @@ section {
   margin-bottom: 8px;
 }
 
-/* ---------- CONTACT SECTION ---------- */
+/* ============================================================
+   15. CONTACT
+   ============================================================ */
 .contact {
   padding: 180px 8vw 100px;
   position: relative;
@@ -1076,15 +1005,7 @@ section {
   background: var(--lime);
   color: #030408;
   font-weight: 600;
-  box-shadow: 0 0 0 rgba(197, 255, 124, 0);
-  transition: box-shadow 0.4s, transform 0.4s, background-color 0.3s;
   cursor: pointer;
-}
-
-.contact-btn:hover {
-  background-color: #d2ff96;
-  box-shadow: 0 0 50px -5px var(--lime-glow);
-  transform: translateY(-4px);
 }
 
 .socials {
@@ -1101,7 +1022,6 @@ section {
   color: var(--text-dim);
   position: relative;
   padding-bottom: 6px;
-  transition: color 0.3s;
 }
 
 .socials a::after {
@@ -1112,7 +1032,6 @@ section {
   width: 0;
   height: 1px;
   background: var(--lime);
-  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .socials a:hover {
@@ -1123,7 +1042,9 @@ section {
   width: 100%;
 }
 
-/* ---------- FOOTER ---------- */
+/* ============================================================
+   16. FOOTER
+   ============================================================ */
 footer {
   margin-top: 100px;
   padding-top: 30px;
@@ -1139,11 +1060,9 @@ footer {
   gap: 15px;
 }
 
-footer span:last-child {
-  color: var(--lime);
-}
-
-/* ---------- PRELOADER ---------- */
+/* ============================================================
+   17. PRELOADER
+   ============================================================ */
 .no-scroll {
   overflow: hidden !important;
   height: 100% !important;
@@ -1257,37 +1176,37 @@ footer span:last-child {
   fill: #f3f0e9;
 }
 
-/* ---------- MEDIA QUERIES FOR MOBILE ---------- */
+/* ============================================================
+   18. MEDIA QUERIES — MOBILE
+   ============================================================ */
 @media (max-width: 768px) {
   nav {
     padding: 20px 6vw;
   }
-  
+
   .hero {
     padding: 0 6vw;
   }
 
-  /* Scroll cue: reposition from absolute to inline on mobile */
   .hero-scrollcue {
     position: relative;
     bottom: auto;
     left: auto;
     margin-top: 40px;
   }
-  
+
   .section-head {
     padding: 0 6vw;
   }
-  
+
   .project-grid {
     padding: 0 6vw;
   }
-  
+
   .contact {
     padding: 120px 6vw 80px;
   }
-  
-  /* Bigger tap target for hamburger on mobile */
+
   .menu-toggle {
     padding: 14px;
     gap: 7px;
@@ -1299,17 +1218,16 @@ footer span:last-child {
     width: 26px;
     height: 2px;
   }
-  
+
   .custom-cursor,
   .custom-cursor-follower {
-    display: none; /* Disable cursor elements on touch devices */
+    display: none;
   }
-  
+
   body {
     cursor: auto;
   }
 
-  /* Responsive voyage timeline */
   .road-section {
     height: auto !important;
     padding: 100px 0 50px 0 !important;
@@ -1325,7 +1243,6 @@ footer span:last-child {
     padding: 0 6vw !important;
   }
 
-  /* Hide spaceship, path drawing, sun, moon, terrain and starry layers on mobile */
   .car-group,
   #roadSvg,
   .road-sun,
@@ -1379,6 +1296,6 @@ footer span:last-child {
   }
 
   .house-label::after {
-    display: none !important; /* Hide arrow tip on mobile */
+    display: none !important;
   }
 }
