@@ -118,7 +118,7 @@ const Hero = forwardRef<HTMLDivElement, HeroProps>(({ onReady }, ref) => {
                 ease="power3.out" splitType="chars" from={{ opacity: 0, y: 40 }} to={{ opacity: 1, y: 0 }}
                 threshold={0.1} textAlign="left" tag="span" />
             </div>
-            <div className="line"><span>I build <span className="accent-lime">distributed cloud systems</span></span></div>
+            <div className="line"><span>I build <span className="accent-lime">distributed cloud <br></br> systems</span></span></div>
             <div className="line"><span>that scale to <span className="accent-amber">millions.</span></span></div>
           </h1>
           <p className="hero-sub">
