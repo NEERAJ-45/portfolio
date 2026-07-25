@@ -83,6 +83,10 @@ function ContactModal({ onClose }: { onClose: () => void }) {
           <div>
             <p className="contact-modal-eyebrow">Let&apos;s connect</p>
             <h3 className="contact-modal-title">Send me a message</h3>
+            <p className="contact-modal-hint">
+              or ping me at{' '}
+              <a href="mailto:neerajsurnis@gmail.com" className="contact-modal-email">neerajsurnis@gmail.com</a>
+            </p>
           </div>
           <button className="contact-modal-close" id="btn-close-contact-modal" onClick={onClose} aria-label="Close">
             <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none">
@@ -177,9 +181,6 @@ export default function ContactSection() {
             >
               Send a message ↗
             </button>
-            <a href="mailto:neerajsurnis@gmail.com" className="contact-email-link">
-              neerajsurnis@gmail.com
-            </a>
           </div>
 
           <div className="socials">

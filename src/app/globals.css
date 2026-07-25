@@ -1270,8 +1270,27 @@ section {
 .contact-modal-title {
   font-size: 1.45rem;
   font-weight: 700;
-  margin: 0;
+  margin: 0 0 6px;
   color: var(--text);
+}
+
+.contact-modal-hint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  font-family: var(--font-jetbrains-mono);
+}
+
+.contact-modal-email {
+  color: var(--lime);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(197, 255, 124, 0.4);
+  transition: text-decoration-color 0.2s;
+}
+
+.contact-modal-email:hover {
+  text-decoration-color: var(--lime);
 }
 
 .contact-modal-close {
