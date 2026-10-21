@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Instrument_Serif, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,10 +7,11 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const spaceGrotesk = Space_Grotesk({
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
-  variable: "--font-space-grotesk",
-  weight: ["400", "500", "600", "700"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-instrument-serif",
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -19,10 +20,37 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500"],
 });
 
+const title =
+  "Neeraj Surnis — Backend Engineer, Payments & Distributed Systems";
+const description =
+  "Backend engineer building payment rails, event-driven services, and systems that stay correct under load. Java, Spring Boot, Kafka, PostgreSQL, AWS.";
+
 export const metadata: Metadata = {
-  title: "NEERAJ Surnis — Creative Developer",
-  description:
-    "Creative developer crafting fast, motion-rich web products — where clean engineering meets storytelling, scroll, and a little bit of showing off.",
+  title,
+  description,
+  keywords: [
+    "Neeraj Surnis",
+    "backend engineer",
+    "payments",
+    "distributed systems",
+    "Java",
+    "Spring Boot",
+    "Kafka",
+    "PostgreSQL",
+    "AWS",
+  ],
+  authors: [{ name: "Neeraj Surnis" }],
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    locale: "en_IN",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
 };
 
 export default function RootLayout({
@@ -33,7 +61,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
+      className={`${inter.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
     >
       <body>{children}</body>
     </html>
